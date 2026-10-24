@@ -1,0 +1,43 @@
+data source=local backend=tfidf classes=['business', 'health', 'politics', 'sports'] sizes={'train': 1311, 'dev': 188, 'test': 376}
+using (T, alpha) = (4.0, 0.3) selected on dev in Task 2
+  [seed 0] round 0 baseline dev macro-F1=0.7843
+  [seed 0] round 1: cand=20 precision=1.000 dev F1 0.8072 -> accepted (current 0.8072)
+  [seed 0] round 2: cand=36 precision=1.000 dev F1 0.8043 -> rejected (current 0.8072)
+  [seed 0] round 3: cand=36 precision=1.000 dev F1 0.7903 -> rejected (current 0.8072)
+  [seed 0] stopping: 2 consecutive rejections
+  [seed 0] done: teacher F1 r0->final 0.8356->0.8409
+  [seed 1] round 0 baseline dev macro-F1=0.7994
+  [seed 1] round 1: cand=20 precision=1.000 dev F1 0.8251 -> accepted (current 0.8251)
+  [seed 1] round 2: cand=19 precision=1.000 dev F1 0.8096 -> rejected (current 0.8251)
+  [seed 1] round 3: cand=19 precision=1.000 dev F1 0.8241 -> rejected (current 0.8251)
+  [seed 1] stopping: 2 consecutive rejections
+  [seed 1] done: teacher F1 r0->final 0.8367->0.8338
+  [seed 2] round 0 baseline dev macro-F1=0.8256
+  [seed 2] round 1: cand=14 precision=0.929 dev F1 0.8409 -> accepted (current 0.8409)
+  [seed 2] round 2: cand=12 precision=0.917 dev F1 0.8388 -> rejected (current 0.8409)
+  [seed 2] round 3: cand=12 precision=0.917 dev F1 0.8456 -> accepted (current 0.8456)
+  [seed 2] round 4: cand=44 precision=1.000 dev F1 0.7955 -> rejected (current 0.8456)
+  [seed 2] round 5: cand=44 precision=1.000 dev F1 0.8015 -> rejected (current 0.8456)
+  [seed 2] stopping: 2 consecutive rejections
+  [seed 2] done: teacher F1 r0->final 0.8647->0.8481
+
+=== Task 3: TEST results (mean/std over seeds) ===
+                               test_macro_f1         test_ece             params      latency_ms        
+                                        mean     std     mean     std       mean  std       mean     std
+model                                                                                                   
+student_from_final                    0.8195  0.0278   0.2316  0.0154     8004.0  0.0     0.0069  0.0000
+student_from_round0                   0.8108  0.0249   0.2519  0.0232     8004.0  0.0     0.0068  0.0001
+student_hard_pseudo                   0.8253  0.0159   0.2652  0.0047     8004.0  0.0     0.0068  0.0001
+student_seed_hard                     0.8305  0.0181   0.2928  0.0170     8004.0  0.0     0.0067  0.0000
+student_task2_full_labels(ref)        0.8989  0.0015   0.0459  0.0030     8004.0  0.0     0.0068  0.0001
+teacher_final_loop                    0.8409  0.0072   0.2665  0.0152  2561284.0  0.0     0.0241  0.0005
+teacher_full_labels(ref)              0.9076  0.0018   0.0329  0.0041  2561284.0  0.0     0.0236  0.0006
+teacher_round0                        0.8457  0.0165   0.2999  0.0141  2561284.0  0.0     0.0243  0.0011
+
+=== Does the loop's gain survive distillation? (final - round0, macro-F1) ===
+      teacher_gain_test  student_gain_test  teacher_gain_dev  student_gain_dev
+seed                                                                          
+0                0.0053             0.0075            0.0230            0.0048
+1               -0.0029             0.0067            0.0257            0.0032
+2               -0.0166             0.0121            0.0199           -0.0012
+mean: {'teacher_gain_test': -0.0047, 'student_gain_test': 0.0088, 'teacher_gain_dev': 0.0229, 'student_gain_dev': 0.0023}
