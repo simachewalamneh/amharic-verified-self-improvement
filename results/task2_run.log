@@ -1,0 +1,18 @@
+data source=local backend=tfidf classes=['business', 'health', 'politics', 'sports'] sizes={'train': 1311, 'dev': 188, 'test': 376}
+  [seed 0] teacher test F1=0.9084 params=2561284
+  [seed 0] hard-label student test F1=0.9008 params=8004
+  [seed 1] teacher test F1=0.9088 params=2561284
+  [seed 1] hard-label student test F1=0.9008 params=8004
+  [seed 2] teacher test F1=0.9055 params=2561284
+  [seed 2] hard-label student test F1=0.9008 params=8004
+
+best (T, alpha) on dev: {'T': 4.0, 'alpha': 0.3, 'mean_dev_macro_f1': 0.8978468424497609}
+
+=== Task 2: TEST results (mean/std over seeds) ===
+                               test_macro_f1         test_accuracy         test_ece             params          size_kb      latency_ms        
+                                        mean     std          mean     std     mean     std       mean  std        mean  std       mean     std
+model                                                                                                                                          
+baseline_charLR                       0.9250  0.0000        0.9255  0.0000   0.0662  0.0000   200004.0  0.0    781.2656  0.0        NaN     NaN
+student_distilled(best_on_dev)        0.8989  0.0015        0.8998  0.0015   0.0459  0.0030     8004.0  0.0     33.0361  0.0     0.0067  0.0001
+student_hard                          0.9008  0.0000        0.9016  0.0000   0.0641  0.0034     8004.0  0.0     33.0361  0.0     0.0067  0.0001
+teacher                               0.9076  0.0018        0.9087  0.0015   0.0329  0.0041  2561284.0  0.0  10007.2158  0.0     0.0229  0.0005
