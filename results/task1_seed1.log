@@ -1,0 +1,32 @@
+data source=local backend=tfidf classes=['business', 'health', 'politics', 'sports'] sizes={'train': 1311, 'dev': 188, 'test': 376}
+  [seed 1] round 0 baseline dev macro-F1=0.7994
+  [seed 1] round 1: cand=20 precision=1.000 dev F1 0.8251 -> accepted (current 0.8251)
+  [seed 1] round 2: cand=19 precision=1.000 dev F1 0.8096 -> rejected (current 0.8251)
+  [seed 1] round 3: cand=19 precision=1.000 dev F1 0.8241 -> rejected (current 0.8251)
+  [seed 1] stopping: 2 consecutive rejections
+  [seed 1] round 0 baseline dev macro-F1=0.7994
+  [seed 1] round 1: cand=20 precision=1.000 dev F1 0.8251 -> accepted (current 0.8251)
+  [seed 1] round 2: cand=19 precision=1.000 dev F1 0.8096 -> rejected (current 0.8251)
+  [seed 1] round 3: cand=19 precision=1.000 dev F1 0.8241 -> rejected (current 0.8251)
+  [seed 1] stopping: 2 consecutive rejections
+  [seed 1] round 0 baseline dev macro-F1=0.7994
+  [seed 1] round 1: cand=20 precision=1.000 dev F1 0.8251 -> accepted (current 0.8251)
+  [seed 1] round 2: cand=19 precision=1.000 dev F1 0.8096 -> accepted (current 0.8096)
+  [seed 1] round 3: cand=55 precision=1.000 dev F1 0.8226 -> accepted (current 0.8226)
+  [seed 1] round 4: cand=80 precision=0.988 dev F1 0.7684 -> accepted (current 0.7684)
+  [seed 1] round 5: cand=76 precision=1.000 dev F1 0.7130 -> accepted (current 0.7130)
+
+=== Task 1: final TEST results (mean/std over seeds) ===
+                               test_macro_f1     test_accuracy     test_ece    
+                                        mean std          mean std     mean std
+variant                                                                        
+baseline_charLR_seed_only             0.8575 NaN        0.8590 NaN   0.3807 NaN
+confidence_only:final_teacher         0.8338 NaN        0.8378 NaN   0.2614 NaN
+confidence_only:round0_teacher        0.8367 NaN        0.8404 NaN   0.2847 NaN
+naive:final_teacher                   0.7193 NaN        0.7234 NaN   0.0649 NaN
+naive:round0_teacher                  0.8367 NaN        0.8404 NaN   0.2847 NaN
+reference_full_labels                 0.9088 NaN        0.9096 NaN   0.0309 NaN
+verified:final_teacher                0.8338 NaN        0.8378 NaN   0.2614 NaN
+verified:round0_teacher               0.8367 NaN        0.8404 NaN   0.2847 NaN
+
+per-round log: /home/claude/amharic-verified-self-improvement/results/task1_seed1/rounds.csv
