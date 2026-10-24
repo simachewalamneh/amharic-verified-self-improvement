@@ -1,0 +1,17 @@
+data source=local backend=tfidf classes=['business', 'health', 'politics', 'sports'] sizes={'train': 1311, 'dev': 188, 'test': 376}
+  [seed 0] round 0 baseline dev macro-F1=0.7843
+  [seed 0] round 1: cand=20 precision=1.000 dev F1 0.8072 -> accepted (current 0.8072)
+  [seed 0] round 2: cand=36 precision=1.000 dev F1 0.8043 -> rejected (current 0.8072)
+  [seed 0] round 3: cand=36 precision=1.000 dev F1 0.7903 -> rejected (current 0.8072)
+  [seed 0] stopping: 2 consecutive rejections
+  [seed 0] round 0 baseline dev macro-F1=0.7843
+  [seed 0] round 1: cand=20 precision=1.000 dev F1 0.8072 -> accepted (current 0.8072)
+  [seed 0] round 2: cand=36 precision=1.000 dev F1 0.8043 -> rejected (current 0.8072)
+  [seed 0] round 3: cand=36 precision=1.000 dev F1 0.7903 -> rejected (current 0.8072)
+  [seed 0] stopping: 2 consecutive rejections
+  [seed 0] round 0 baseline dev macro-F1=0.7843
+  [seed 0] round 1: cand=20 precision=1.000 dev F1 0.8072 -> accepted (current 0.8072)
+  [seed 0] round 2: cand=36 precision=1.000 dev F1 0.8043 -> accepted (current 0.8043)
+  [seed 0] round 3: cand=63 precision=0.984 dev F1 0.7169 -> accepted (current 0.7169)
+  [seed 0] round 4: cand=106 precision=0.991 dev F1 0.6992 -> accepted (current 0.6992)
+  [seed 0] round 5: cand=89 precision=1.000 dev F1 0.6191 -> accepted (current 0.6191)
