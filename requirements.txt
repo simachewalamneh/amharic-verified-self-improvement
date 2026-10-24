@@ -1,0 +1,11 @@
+numpy>=1.26
+pandas>=2.0
+scikit-learn>=1.3
+scipy>=1.11
+torch>=2.1
+pyyaml>=6.0
+nbformat>=5.9
+jupyter>=1.0
+matplotlib>=3.7
+# optional, only for the AfroXLMR embedding backend
+transformers>=4.40
