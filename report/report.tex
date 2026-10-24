@@ -1,0 +1,58 @@
+\documentclass[10pt]{article}
+\usepackage[margin=2cm]{geometry}\usepackage{booktabs}\usepackage{amsmath}\usepackage{microtype}
+\title{Verified Recursive Self-Training and Knowledge Distillation for Amharic News Topic Classification}
+\author{iCog Labs AI Internship: Emerging AI Paradigms assignment}
+\date{}
+\begin{document}\maketitle
+\section{Setup}
+\textbf{Data.} Amharic MasakhaNEWS (official splits): 1{,}311 train, 188 dev, 376 test; four classes (business, health, politics, sports). Text is headline plus body, truncated to 3{,}000 characters. The dataset license was not verified.
+\textbf{Protocol.} Tasks 1 and 3 use a stratified labelled seed set of 20 articles per class (80 labels); the other 1{,}231 training articles are an unlabeled pool whose gold labels are used only to measure pseudo-label precision. Dev decides accept/rollback and $(T,\alpha)$ selection; test is used only for final reporting. All numbers are mean $\pm$ std over 3 seeds (0,1,2).
+\textbf{Models.} Teacher: 2-layer MLP (256 hidden) on word 1--2-gram TF-IDF (10k features). Student: linear model on a 2k-feature unigram TF-IDF view (8{,}004 parameters). Independent verifier and baseline: logistic regression on character 2--4-gram TF-IDF. AfroXLMR features are implemented but were not run.
+\section{Task 1: verified recursive self-training}
+Each round pseudo-labels the pool, accepts labels with confidence $\ge 0.9$ (verified variant: and agreement with the independent character model), retrains a copy on seed plus accepted examples, and accepts the copy only if dev macro-F1 does not drop; two consecutive rejections stop the loop (at most 5 rounds).
+\begin{center}\begin{tabular}{lrr}
+\toprule
+Model & Test macro-F1 & Test ECE \\
+\midrule
+Char-LR, seed only & 0.873 $\pm$ 0.018 & 0.400 $\pm$ 0.018 \\
+Round-0 teacher (seed only) & 0.848 $\pm$ 0.015 & 0.304 $\pm$ 0.017 \\
+Verified loop, final teacher & 0.845 $\pm$ 0.011 & 0.253 $\pm$ 0.008 \\
+Confidence-only loop, final & 0.845 $\pm$ 0.011 & 0.253 $\pm$ 0.008 \\
+Naive loop (no rollback), final & 0.708 $\pm$ 0.062 & 0.068 $\pm$ 0.009 \\
+Teacher, all gold labels (ref.) & 0.910 $\pm$ 0.006 & 0.037 $\pm$ 0.010 \\
+\bottomrule
+\end{tabular}\end{center}
+The verified loop gave no reliable test gain (per-seed change in test macro-F1: $+0.005$, $-0.003$, $-0.017$), although dev improved after round 1. The agreement check changed nothing relative to confidence-only. Without rollback, test macro-F1 fell by 0.11--0.17 even though pseudo-label precision stayed at 0.97--1.00; the entropy of accepted classes decreased across rounds, consistent with class drift toward easy classes (class counts were not inspected directly). The character-LR baseline trained on the seed set alone scored above the MLP teacher.
+\section{Task 2: knowledge distillation}
+Loss: $\alpha\,\mathrm{CE}(y,s)+(1-\alpha)\,T^2\,\mathrm{KL}\big(\mathrm{softmax}(t/T)\,\|\,\mathrm{softmax}(s/T)\big)$; sweep $T\in\{1,2,4\}$, $\alpha\in\{0.3,0.5,0.7\}$, selected on dev. Teacher trained on all gold train labels.
+\begin{center}\begin{tabular}{lrrrr}
+\toprule
+Model & Test macro-F1 & Test ECE & Params & CPU ms/example \\
+\midrule
+Teacher (MLP) & 0.910 $\pm$ 0.006 & 0.037 $\pm$ 0.010 & 2{,}561{,}284 & 0.1090 $\pm$ 0.0122 \\
+Student{,} hard labels & 0.901 $\pm$ 0.000 & 0.065 $\pm$ 0.004 & 8{,}004 & 0.0269 $\pm$ 0.0007 \\
+Student{,} distilled (T=4{,} $\alpha$=0.5) & 0.902 $\pm$ 0.004 & 0.039 $\pm$ 0.009 & 8{,}004 & 0.0261 $\pm$ 0.0033 \\
+Char-LR baseline & 0.925 $\pm$ 0.000 & 0.066 $\pm$ 0.000 & 200{,}004 & -- \\
+\bottomrule
+\end{tabular}\end{center}
+The student has about 320$\times$ fewer parameters and runs about 3.4$\times$ faster than the teacher at a cost of roughly 0.7 to 0.9 macro-F1 points. Distillation did not improve student accuracy over hard labels; it lowered test ECE. The character-LR baseline was the strongest model here but is much larger (200{,}004 parameters).
+\section{Task 3: merged pipeline}
+The Task 1 loop produces a teacher that is distilled into the student using $(T,\alpha)=(4,0.5)$ from Task 2. Hard labels exist only for the seed set during distillation.
+\begin{center}\begin{tabular}{lrr}
+\toprule
+Model & Test macro-F1 & Test ECE \\
+\midrule
+teacher\_round0 & 0.848 $\pm$ 0.015 & 0.304 $\pm$ 0.017 \\
+teacher\_final\_loop & 0.845 $\pm$ 0.011 & 0.253 $\pm$ 0.008 \\
+student\_seed\_hard & 0.830 $\pm$ 0.022 & 0.292 $\pm$ 0.019 \\
+student\_hard\_pseudo & 0.818 $\pm$ 0.024 & 0.247 $\pm$ 0.025 \\
+student\_from\_round0 & 0.810 $\pm$ 0.032 & 0.246 $\pm$ 0.028 \\
+student\_from\_final & 0.816 $\pm$ 0.035 & 0.214 $\pm$ 0.021 \\
+student\_task2\_full\_labels(ref.) & 0.902 $\pm$ 0.004 & 0.039 $\pm$ 0.009 \\
+teacher\_full\_labels(ref.) & 0.910 $\pm$ 0.006 & 0.037 $\pm$ 0.010 \\
+\bottomrule
+\end{tabular}\end{center}
+Mean change (final minus round-0): teacher test -0.0037, student test +0.0060, teacher dev +0.0214, student dev +0.0061. Because the teacher gain on test is itself within noise, these results do not show that the loop's improvement survives distillation; they are a null result with 3 seeds.
+\section{Limitations}
+Three seeds and a 188-example dev set make accept/rollback decisions noisy. The teacher is underconfident at small label budgets (high ECE), which limits how many pseudo-labels pass the 0.9 threshold. The verifier is a proxy rather than ground truth. TF-IDF features were used throughout, so conclusions may differ with an AfroXLMR encoder. Dataset license unverified.
+\end{document}
