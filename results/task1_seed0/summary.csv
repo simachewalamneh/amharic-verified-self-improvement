@@ -1,0 +1,11 @@
+,test_macro_f1,test_macro_f1,test_accuracy,test_accuracy,test_ece,test_ece
+,mean,std,mean,std,mean,std
+variant,,,,,,
+baseline_charLR_seed_only,0.8685,,0.8697,,0.4039,
+confidence_only:final_teacher,0.8409,,0.8431,,0.2836,
+confidence_only:round0_teacher,0.8356,,0.8378,,0.3026,
+naive:final_teacher,0.6648,,0.6862,,0.0565,
+naive:round0_teacher,0.8356,,0.8378,,0.3026,
+reference_full_labels,0.9084,,0.9096,,0.0303,
+verified:final_teacher,0.8409,,0.8431,,0.2836,
+verified:round0_teacher,0.8356,,0.8378,,0.3026,
