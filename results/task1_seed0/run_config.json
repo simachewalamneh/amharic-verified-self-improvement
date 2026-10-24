@@ -1,0 +1,86 @@
+{
+  "seeds": [
+    0
+  ],
+  "config": {
+    "data": {
+      "source": "local",
+      "raw_dir": "data/raw",
+      "max_chars": 3000,
+      "seed_per_class": 20
+    },
+    "features": {
+      "backend": "tfidf",
+      "teacher_max_features": 10000,
+      "student_max_features": 2000,
+      "verifier_max_features": 50000,
+      "afroxlmr_name": "Davlan/afro-xlmr-base",
+      "afroxlmr_max_len": 256
+    },
+    "models": {
+      "teacher": {
+        "kind": "mlp",
+        "hidden": 256,
+        "dropout": 0.5,
+        "epochs": 30,
+        "lr": 0.001,
+        "weight_decay": 0.0001,
+        "batch_size": 32
+      },
+      "student": {
+        "kind": "linear",
+        "hidden": 0,
+        "dropout": 0.0,
+        "epochs": 60,
+        "lr": 0.005,
+        "weight_decay": 0.0001,
+        "batch_size": 32
+      },
+      "verifier_lr_C": 10.0
+    },
+    "task1": {
+      "rounds": 5,
+      "conf_threshold": 0.9,
+      "require_agreement": true,
+      "use_rollback": true,
+      "min_delta": 0.0,
+      "max_per_class_per_round": null,
+      "stop_after_rejects": 2,
+      "seeds": [
+        0,
+        1,
+        2
+      ]
+    },
+    "task2": {
+      "temperatures": [
+        1,
+        2,
+        4
+      ],
+      "alphas": [
+        0.3,
+        0.5,
+        0.7
+      ],
+      "seeds": [
+        0,
+        1,
+        2
+      ]
+    },
+    "task3": {
+      "temperature": null,
+      "alpha": null,
+      "seeds": [
+        0,
+        1,
+        2
+      ]
+    },
+    "eval": {
+      "ece_bins": 15,
+      "latency_samples": 200
+    }
+  }
+}
