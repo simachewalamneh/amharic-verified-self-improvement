@@ -1,0 +1,14 @@
+\begin{tabular}{lccccc}
+\toprule
+Variant & Test macro-F1 & $\Delta$ vs seed-only [95\% CI] & Wilcoxon $p$ & Accepted & PL precision \\
+\midrule
+Seed-only teacher (no loop) & 0.843\,$\pm$\,0.013 & -- & -- & 0 & -- \\
+\addlinespace
+Verified loop (confidence + agreement + rollback) & 0.842\,$\pm$\,0.015 & $-$0.001 [$-$0.008, +0.004] & 0.844 & 20 & 0.971 \\
+Verified loop, acceptance margin 0.01 & 0.842\,$\pm$\,0.011 & $-$0.001 [$-$0.004, +0.001] & 0.750 & 5 & 0.976 \\
+Naive loop (confidence, no rollback) & 0.697\,$\pm$\,0.048 & $-$0.147 [$-$0.177, $-$0.120] & 0.002 & 337 & 0.984 \\
+Per-class cap (10 per class per round), no rollback & 0.822\,$\pm$\,0.016 & $-$0.022 [$-$0.030, $-$0.013] & 0.004 & 100 & 0.987 \\
+Balanced top-$k$ per class, no rollback & 0.859\,$\pm$\,0.012 & +0.016 [+0.010, +0.020] & 0.002 & 200 & 0.979 \\
+Balanced top-$k$ per class + rollback & 0.852\,$\pm$\,0.019 & +0.009 [+0.000, +0.018] & 0.164 & 80 & 0.980 \\
+\bottomrule
+\end{tabular}
