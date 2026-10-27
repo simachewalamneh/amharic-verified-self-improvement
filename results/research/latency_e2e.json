@@ -1,0 +1,13 @@
+{
+  "teacher": {
+    "vectorise_ms": 0.6349980000095456,
+    "forward_ms": 0.3095355000368727,
+    "end_to_end_ms": 1.0121089999302058
+  },
+  "student": {
+    "vectorise_ms": 0.3559589999895252,
+    "forward_ms": 0.1781194999921354,
+    "end_to_end_ms": 0.5432455000118352
+  },
+  "end_to_end_speedup": 1.8630784790820278
+}
