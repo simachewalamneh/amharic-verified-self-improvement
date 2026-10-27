@@ -1,0 +1,10 @@
+\begin{tabular}{lcccc}
+\toprule
+Variant & Business & Health & Politics & Sports \\
+\midrule
+Naive loop (confidence, no rollback) & 2.5 (1.0\%) & 48.8 (14.8\%) & 44.1 (13.4\%) & 242.0 (78.3\%) \\
+Per-class cap (10 per class per round), no rollback & 2.4 (0.9\%) & 25.9 (7.8\%) & 22.5 (6.8\%) & 48.7 (15.8\%) \\
+Balanced top-$k$ per class, no rollback & 50.0 (19.1\%) & 50.0 (15.2\%) & 50.0 (15.2\%) & 50.0 (16.2\%) \\
+Verified loop (confidence + agreement + rollback) & 0.3 (0.1\%) & 5.2 (1.6\%) & 3.2 (1.0\%) & 11.5 (3.7\%) \\
+\bottomrule
+\end{tabular}
