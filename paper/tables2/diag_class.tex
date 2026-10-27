@@ -1,0 +1,15 @@
+\begin{tabular}{llcccccc}
+\toprule
+Teacher & Class & Pool & Mean conf. & Median conf. & Conf.\ $\ge$ 0.9 (\%) & Confidently wrong & Recall \\
+\midrule
+MLP (raw) & Business & 262 & 0.491 & 0.466 & 0.3 & 0.4 & 0.768 \\
+ & Health & 330 & 0.551 & 0.539 & 2.3 & 0.1 & 0.848 \\
+ & Politics & 330 & 0.532 & 0.512 & 0.8 & 0.0 & 0.866 \\
+ & Sports & 309 & 0.602 & 0.601 & 4.4 & 0.0 & 0.905 \\
+\addlinespace
+Char-LR (calibrated) & Business & 262 & 0.803 & 0.856 & 42.9 & 10.3 & 0.806 \\
+ & Health & 330 & 0.866 & 0.957 & 62.5 & 4.1 & 0.872 \\
+ & Politics & 330 & 0.848 & 0.921 & 55.8 & 6.0 & 0.881 \\
+ & Sports & 309 & 0.898 & 0.978 & 71.9 & 2.0 & 0.918 \\
+\bottomrule
+\end{tabular}
