@@ -1,0 +1,50 @@
+@startuml task2_distillation
+skinparam dpi 220
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 12
+skinparam roundCorner 14
+skinparam ArrowColor #3C4858
+skinparam ActivityBackgroundColor #F4F7FB
+skinparam ActivityBorderColor #5B7DB1
+skinparam NoteBackgroundColor #FFF8E1
+skinparam NoteBorderColor #C9A227
+skinparam PartitionBorderColor #9AA5B1
+skinparam PartitionFontStyle bold
+skinparam wrapWidth 330
+skinparam NoteTextAlignment left
+title Task 2: Knowledge distillation
+
+partition "1. Data and features" #E8F0FE {
+  start
+  :Load MasakhaNEWS (Amharic): train 1,311 (all gold labels) / dev 188 / test 376;
+  :Fit feature views on the training text (no labels)\nteacher: word 1-2-gram TF-IDF, 10k features\nstudent: word unigram TF-IDF, 2k features;
+}
+partition "2. Teacher" #E6F4EA {
+  :Train teacher (MLP, 256 hidden units) on all gold labels;
+  :Compute teacher logits t on the training set;
+  note right
+    about 2.56 million parameters
+  end note
+}
+partition "3. Students and baseline" #FCE8E6 {
+  :**Hard-label student**: linear model, cross-entropy on gold labels;
+  :**Distilled students**: linear model trained with\nL = alpha * CE(y, s)\n  + (1 - alpha) * T^2 * KL( softmax(t/T) || softmax(s/T) );
+  note right
+    Sweep T in {1, 2, 4} and alpha in {0.3, 0.5, 0.7}.
+    8,004 parameters (about 320x fewer than the teacher).
+  end note
+  :**Baseline**: logistic regression on character n-grams;
+}
+partition "4. Selection and evaluation" #FEF3E0 {
+  :Choose (T, alpha) by mean **dev** macro-F1\n(never on the test split);
+  :Evaluate all models on test: macro-F1, ECE,\nparameters, size, CPU latency (seeds 0, 1, 2);
+  :Save results/task2 (all_runs, summary, sweep, best.json);
+  stop
+}
+legend right
+  **Question answered**
+  Can soft targets compress a strong teacher,
+  and do they beat hard labels?
+end legend
+@enduml
