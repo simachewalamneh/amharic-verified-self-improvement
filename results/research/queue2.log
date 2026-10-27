@@ -1,0 +1,85 @@
+data source=local backend=tfidf classes=['business', 'health', 'politics', 'sports'] sizes={'train': 1311, 'dev': 188, 'test': 376}
+distill_ext seed 0 done
+distill_ext seed 1 done
+distill_ext seed 2 done
+distill_ext seed 3 done
+distill_ext seed 4 done
+distill_ext seed 5 done
+distill_ext seed 6 done
+distill_ext seed 7 done
+distill_ext seed 8 done
+distill_ext seed 9 done
+  condition  family    T  alpha  hard_f1  distilled_f1  diff_f1   ci_lo   ci_hi  wilcoxon_p  tost_p  hard_ece  distilled_ece  diff_ece  teacher_f1
+0      full  linear  4.0    0.3   0.9006        0.8994  -0.0011 -0.0025  0.0002      0.1523  0.0000    0.0640         0.0453   -0.0188         NaN
+1      full   mlp64  2.0    0.3   0.8929        0.8939   0.0011 -0.0018  0.0044      0.8457  0.0002    0.0555         0.0469   -0.0087         NaN
+2  lowlabel  linear  4.0    0.3   0.8311        0.8173  -0.0138 -0.0191 -0.0084      0.0039  0.8933    0.2879         0.2505   -0.0374         NaN
+3  lowlabel   mlp64  2.0    0.3   0.8314        0.8149  -0.0165 -0.0239 -0.0100      0.0020  0.9424    0.1220         0.2494    0.1274         NaN
+data source=local backend=tfidf classes=['business', 'health', 'politics', 'sports'] sizes={'train': 1311, 'dev': 188, 'test': 376}
+using (T, alpha) = (4.0, 0.3) selected on dev in Task 2
+  [seed 3] round 0 baseline dev macro-F1=0.8842
+  [seed 3] round 1: cand=25 precision=1.000 dev F1 0.8589 -> rejected (current 0.8842)
+  [seed 3] round 2: cand=25 precision=1.000 dev F1 0.8530 -> rejected (current 0.8842)
+  [seed 3] stopping: 2 consecutive rejections
+  [seed 3] done: teacher F1 r0->final 0.8592->0.8592
+  [seed 4] round 0 baseline dev macro-F1=0.8449
+  [seed 4] round 1: cand=24 precision=1.000 dev F1 0.8411 -> rejected (current 0.8449)
+  [seed 4] round 2: cand=24 precision=1.000 dev F1 0.8540 -> accepted (current 0.8540)
+  [seed 4] round 3: cand=59 precision=0.966 dev F1 0.8418 -> rejected (current 0.8540)
+  [seed 4] round 4: cand=59 precision=0.966 dev F1 0.8609 -> accepted (current 0.8609)
+  [seed 4] round 5: cand=66 precision=1.000 dev F1 0.8192 -> rejected (current 0.8609)
+  [seed 4] done: teacher F1 r0->final 0.8370->0.8165
+  [seed 5] round 0 baseline dev macro-F1=0.8472
+  [seed 5] round 1: cand=26 precision=0.962 dev F1 0.8463 -> rejected (current 0.8472)
+  [seed 5] round 2: cand=26 precision=0.962 dev F1 0.8454 -> rejected (current 0.8472)
+  [seed 5] stopping: 2 consecutive rejections
+  [seed 5] done: teacher F1 r0->final 0.8459->0.8459
+  [seed 6] round 0 baseline dev macro-F1=0.8582
+  [seed 6] round 1: cand=39 precision=0.974 dev F1 0.8483 -> rejected (current 0.8582)
+  [seed 6] round 2: cand=39 precision=0.974 dev F1 0.8515 -> rejected (current 0.8582)
+  [seed 6] stopping: 2 consecutive rejections
+  [seed 6] done: teacher F1 r0->final 0.8454->0.8454
+  [seed 7] round 0 baseline dev macro-F1=0.8684
+  [seed 7] round 1: cand=28 precision=0.964 dev F1 0.8616 -> rejected (current 0.8684)
+  [seed 7] round 2: cand=28 precision=0.964 dev F1 0.8700 -> accepted (current 0.8700)
+  [seed 7] round 3: cand=48 precision=1.000 dev F1 0.8615 -> rejected (current 0.8700)
+  [seed 7] round 4: cand=48 precision=1.000 dev F1 0.8652 -> rejected (current 0.8700)
+  [seed 7] stopping: 2 consecutive rejections
+  [seed 7] done: teacher F1 r0->final 0.8529->0.8684
+  [seed 8] round 0 baseline dev macro-F1=0.8413
+  [seed 8] round 1: cand=25 precision=0.960 dev F1 0.8485 -> accepted (current 0.8485)
+  [seed 8] round 2: cand=33 precision=1.000 dev F1 0.8433 -> rejected (current 0.8485)
+  [seed 8] round 3: cand=33 precision=1.000 dev F1 0.8352 -> rejected (current 0.8485)
+  [seed 8] stopping: 2 consecutive rejections
+  [seed 8] done: teacher F1 r0->final 0.8247->0.8291
+  [seed 9] round 0 baseline dev macro-F1=0.8363
+  [seed 9] round 1: cand=26 precision=1.000 dev F1 0.8323 -> rejected (current 0.8363)
+  [seed 9] round 2: cand=26 precision=1.000 dev F1 0.8323 -> rejected (current 0.8363)
+  [seed 9] stopping: 2 consecutive rejections
+  [seed 9] done: teacher F1 r0->final 0.8320->0.8320
+
+=== Task 3: TEST results (mean/std over seeds) ===
+                               test_macro_f1         test_ece             params      latency_ms        
+                                        mean     std     mean     std       mean  std       mean     std
+model                                                                                                   
+student_from_final                    0.8188  0.0122   0.2313  0.0188     8004.0  0.0     0.0068  0.0000
+student_from_round0                   0.8201  0.0130   0.2500  0.0113     8004.0  0.0     0.0069  0.0001
+student_hard_pseudo                   0.8301  0.0118   0.2672  0.0267     8004.0  0.0     0.0070  0.0001
+student_seed_hard                     0.8313  0.0120   0.2859  0.0058     8004.0  0.0     0.0069  0.0001
+student_task2_full_labels(ref)        0.8996  0.0028   0.0450  0.0040     8004.0  0.0     0.0069  0.0001
+teacher_final_loop                    0.8424  0.0180   0.2664  0.0294  2561284.0  0.0     0.0256  0.0011
+teacher_full_labels(ref)              0.9097  0.0039   0.0276  0.0059  2561284.0  0.0     0.0256  0.0005
+teacher_round0                        0.8424  0.0120   0.2837  0.0042  2561284.0  0.0     0.0246  0.0014
+
+=== Does the loop's gain survive distillation? (final - round0, macro-F1) ===
+      teacher_gain_test  student_gain_test  teacher_gain_dev  student_gain_dev
+seed                                                                          
+3                0.0000             0.0000            0.0000            0.0000
+4               -0.0205            -0.0085            0.0160           -0.0034
+5                0.0000             0.0000            0.0000            0.0000
+6                0.0000             0.0000            0.0000            0.0000
+7                0.0156            -0.0016            0.0016            0.0076
+8                0.0044             0.0010            0.0072            0.0047
+9                0.0000             0.0000            0.0000            0.0000
+mean: {'teacher_gain_test': -0.0001, 'student_gain_test': -0.0013, 'teacher_gain_dev': 0.0035, 'student_gain_dev': 0.0013}
+analysis written: ['analysis_budget.csv', 'analysis_charlr_variants.csv', 'analysis_facts.json', 'analysis_main_variants.csv', 'analysis_paired.csv', 'analysis_per_example.csv', 'analysis_threshold.csv', 'analysis_verifier.csv']
+QUEUE2_DONE
