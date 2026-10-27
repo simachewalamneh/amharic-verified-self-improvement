@@ -1,0 +1,208 @@
+\documentclass[11pt]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{xcolor}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{url}
+\setlength{\parskip}{0.4em}
+\setlength{\emergencystretch}{3em}
+\renewcommand{\arraystretch}{1.08}
+\input{tables2/macros.tex}
+
+\title{When High-Precision Pseudo-Labels Fail:\\
+Class-Composition Bias in Low-Label Self-Training\\
+for Amharic News Classification}
+\author{Simachew Alamneh\\
+\small Bonga University, Ethiopia \;\textbar\; iCog Labs AI Internship\\
+\small \texttt{[corresponding author email]}}
+\date{}
+
+\begin{document}
+\maketitle
+\input{abstract.tex}
+
+\section{Introduction}
+Labelled data is the scarce resource in most African-language NLP. Unlabeled Amharic news text is easy to collect; hand-labelled articles are not. Self-training promises a way out: a model trained on a few labels predicts the rest, its most trustworthy predictions are added to the training set, and the process repeats. A standard safeguard is to keep only predictions that look reliable, for example those above a confidence threshold, perhaps confirmed by a second model, and to discard any round that hurts a held-out development set.
+
+This paper asks how far such safeguards go in a realistic low-label setting, and it starts from a puzzling observation. In an initial three-seed study, a loop whose accepted pseudo-labels were 97 to 100\% correct still lost 0.11 to 0.17 macro-F1 on the test set. Per-item precision, the quantity most self-training work reports, was not warning us about anything. The question is why.
+
+We follow that observation with a larger and more carefully controlled study (\nSeeds{} paired seeds, an explicit audit of the evaluation protocol, and interventions rather than only descriptions). Our answers are more nuanced than the initial result suggested.
+\begin{enumerate}
+\item \textbf{The failure is real but conditional.} With a raw MLP teacher and a 0.9 confidence threshold, the unprotected loop loses \cmpMainNaive{} macro-F1 (mean difference and 95\% bootstrap CI) relative to the seed-only teacher, on every seed, while pseudo-label precision stays at \precMainNaive{}. The accepted examples are heavily skewed towards one class: sports receives about 78\% of its pool articles as pseudo-labels, business about 1\%.
+\item \textbf{The cause appears to be an underconfident teacher meeting a single global threshold.} The raw teacher is underconfident, most of all on business (mean confidence \meanConfMlpBusiness{} against recall \recallMlpBusiness{}), so a global threshold selects mostly the easiest class. A calibrated, stronger character-level teacher or a lower threshold removes the collapse, and class-balanced selection (top-$k$ per predicted class) turns it into a consistent gain of \cmpMainBalanced{}.
+\item \textbf{The cross-representation verifier did almost nothing useful.} It rarely disagrees with the teacher, and when it does, it is usually the one that is wrong; teacher and verifier errors are strongly correlated.
+\item \textbf{Development-set rollback is protective but noisy.} It prevents the collapse, but the development gain it reports is within sampling noise.
+\end{enumerate}
+We also examine knowledge distillation of the resulting teachers into small students, with linear and non-linear students and two supervision conditions. We do not claim methodological novelty; the contribution is a controlled, reproducible diagnosis and a simple remedy, evaluated with paired statistics.
+
+\section{Related Work}
+\paragraph{Self-training and pseudo-labelling.} Self-training has a long history in NLP \citep{yarowsky1995unsupervised} and was popularised for deep networks as pseudo-labelling \citep{lee2013pseudo}. Modern semi-supervised methods combine it with consistency regularisation, confidence thresholds and curricula \citep{sohn2020fixmatch,zhang2021flexmatch}, and with teacher--student iteration \citep{xie2020noisy}. Confirmation bias, in which early errors are reinforced in later rounds, is the central failure mode \citep{arazo2020pseudo}.
+
+\paragraph{Selecting pseudo-labels.} Selection rules range from fixed confidence thresholds to uncertainty-aware filtering in language-model self-training \citep{wang2023upet}, decision-theoretic selection \citep{rodemann2023decision,rodemann2023likelihoods}, and conformal prediction sets with validity guarantees \citep{lienen2023conformal}. Our verifier, which requires agreement with a model built on a different feature view, represents the common practice of multi-view agreement; our experiments probe how much it adds.
+
+\paragraph{Class imbalance in pseudo-labels.} Pseudo-labels can be class-skewed even when the labelled and unlabeled data are balanced. \citet{wang2022debiased} show that pseudo-labels produced by a classifier trained on balanced data are themselves heavily imbalanced, and propose debiasing; \citet{wei2021crest} rebalance self-training on genuinely imbalanced data and observe that minority classes yield high-precision pseudo-labels that standard selection under-uses. Our setting is balanced text classification with a tiny seed set; our finding is consistent with this literature and adds a text and low-resource data point, a calibration-based explanation, and a test of simple remedies.
+
+\paragraph{Self-refinement and model collapse.} Test-time self-refinement changes outputs without changing weights \citep{madaan2023selfrefine}, while repeated training on model-generated data can degrade generative models \citep{shumailov2024collapse}. We study the weight-updating discriminative case, which is closer to classical self-training than to recursive self-improvement.
+
+\paragraph{Calibration.} Neural classifiers are often miscalibrated, and temperature scaling is a simple, effective post-hoc fix \citep{guo2017calibration}. Calibration matters for self-training because confidence thresholds only mean the same thing across classes and rounds when confidence tracks correctness. Expected calibration error (ECE) measures the size of miscalibration but not its direction, so we also report mean confidence against accuracy.
+
+\paragraph{Distillation.} We use the temperature-scaled soft-target loss of \citet{hinton2015distilling}.
+
+\paragraph{Amharic and African-language news classification.} The Amharic dataset of \citet{azime2021amharic} and the Amharic portion of MasakhaNEWS \citep{adelani2023masakhanews} are the main resources for the task. MasakhaNEWS reports full-supervision baselines with African-centric encoders such as AfroXLMR \citep{alabi2022afroxlmr} and AfriBERTa \citep{ogueji2021afriberta}, and few-shot baselines such as pattern-exploiting training and SetFit \citep{schick2021pet,tunstall2022setfit}. Table~\ref{tab:ref} places our small models next to those published numbers.
+
+\paragraph{Statistical practice.} For paired comparisons across runs we follow the guidance of \citet{dror2018hitchhiker}: paired tests, effect sizes with intervals, and no reliance on small differences in mean scores. To support ``no difference'' statements we use equivalence testing \citep{schuirmann1987comparison,lakens2017equivalence}, because a non-significant difference test does not show that an effect is absent.
+
+\section{Problem Setting, Data and Protocol}
+\paragraph{Data and licence.} We use the Amharic subset of MasakhaNEWS with its official splits: 1{,}311 training, 188 development and 376 test articles, four topics (business, health, politics, sports). Articles are crawled from BBC Amharic and annotated by five annotators (Fleiss' $\kappa=0.81$) \citep{adelani2023masakhanews}. The input is the headline followed by the body, truncated to 3{,}000 characters. The sources we found disagree on the licence: the dataset paper states release under an academic licence or CC BY-NC 4.0, whereas the Hugging Face dataset card lists AFL-3.0. We have not resolved this and ask readers to confirm the terms of use with the dataset authors; we redistribute no data.
+
+\paragraph{Splits and labels.} For self-training we draw a stratified \emph{seed set} $S$ of $m$ labelled articles per class from the training split ($m=20$ unless stated, i.e.\ 80 labels). The remaining training articles form the \emph{unlabeled pool} $U$ (262 business, 330 health, 330 politics, 309 sports after removing a 20-per-class seed set). The pool's gold labels are used only to \emph{measure} pseudo-label quality and are never trained on. The development split decides roll-back, selects temperature and distillation hyper-parameters; the test split is used for final reporting.
+
+\paragraph{Protocol audit.} Vectorisers (TF-IDF) are fitted on the text of the whole training split, including the unlabeled pool, without labels. Every model is trained from scratch in each round. Hyper-parameters were set once and not tuned per method. All experiments are paired by seed: the same seed set, initialisation and data order are used for every method within a seed. The initial three-seed study, whose test results we inspected, motivated the interventions studied here; the \nSeeds-seed suites and their comparisons were specified in code before they were run, but they are not formally preregistered, and we apply no multiple-comparison correction.
+
+\paragraph{Metrics and statistics.} The main metric is macro-F1. ECE uses 15 equal-width confidence bins $(\ell, u]$ and skips empty bins. Pseudo-label precision is the fraction of accepted pseudo-labels that match the hidden gold label. The \emph{acceptance rate} of class $c$ is the number of accepted pseudo-labels of that class divided by the number of pool articles that truly belong to $c$. Class entropy is the natural-log entropy of the class distribution of the accepted set (maximum $\ln 4 = 1.386$). Paired differences are computed per seed. We report the mean difference with a bootstrap 95\% confidence interval over seeds (10{,}000 resamples), a two-sided Wilcoxon signed-rank test \citep{wilcoxon1945individual}, and, for ``no effect'' claims, a TOST equivalence test with margin $\pm0.01$ macro-F1. Within a seed we also bootstrap over test and development examples (1{,}000 resamples).
+
+\section{Methods}
+\subsection{Models and feature views}
+The \emph{MLP teacher} is a two-layer network (256 hidden units, dropout 0.5; 30 epochs of Adam, learning rate $10^{-3}$, weight decay $10^{-4}$, batch size 32) on word 1--2-gram TF-IDF (10{,}000 features). The \emph{char-LR teacher} is a logistic regression ($C=100$) on character 2--4-gram TF-IDF (50{,}000 features). A \emph{cross-representation verifier} is a logistic regression ($C=10$) on the other view: character n-grams for the MLP teacher, word n-grams for the char-LR teacher. Both are fitted on the seed set only. The verifier shares the teacher's labels, so it is feature-diverse rather than statistically independent; Section~\ref{sec:verifier} measures how correlated their errors are.
+
+\subsection{The self-training loop}
+Let $f$ be the current teacher, $A$ the accepted pseudo-labelled examples (initially empty), $P=U\setminus A$ the remaining pool and $s$ the current development macro-F1. In round $r\le 5$ the teacher labels $P$, a selection rule picks candidates $C\subseteq P$, and a fresh model $f'$ is trained from scratch on $S\cup A\cup C$. With roll-back, $f'$ replaces $f$ if its development macro-F1 is at least $s$ plus a margin (zero unless stated; ties are accepted); then $A\leftarrow A\cup C$ and $s$ is updated. Otherwise $C$ is discarded and its articles stay in $P$, so they may be reconsidered later. Accepted pseudo-labels are never relabelled. The loop stops after two consecutive roll-backs. If no candidate is selected, $f'$ is retrained on $S\cup A$ with a different seed and the same acceptance rule applies. The \emph{naive} variant uses identical candidate generation but accepts every round.
+
+\subsection{Selection rules}
+\begin{itemize}
+\item \textbf{Threshold:} accept predictions with confidence $\ge0.9$, optionally requiring the verifier to predict the same class.
+\item \textbf{Cap:} the threshold rule, plus at most $k=10$ most-confident accepted examples per predicted class per round.
+\item \textbf{Balanced:} for each predicted class, accept the $k=10$ most confident predictions among those with confidence $\ge0.5$, with no global threshold.
+\end{itemize}
+The balanced rule implicitly assumes classes are roughly balanced (a uniform per-class budget); we do not test imbalanced settings.
+
+\subsection{Calibration}
+Temperature scaling fits a single scalar $T$ minimising the negative log-likelihood of the development set, and divides the teacher's logits by $T$. For logistic regression the logits are the log-probabilities. The development set is therefore used both for calibration and for roll-back decisions.
+
+\subsection{Distillation}
+A student is trained with
+\begin{equation}
+\mathcal{L} \;=\; \alpha\,\mathrm{CE}(y,s) \;+\; (1-\alpha)\,T^{2}\,\mathrm{KL}\!\big(\mathrm{softmax}(t/T)\,\big\|\,\mathrm{softmax}(s/T)\big),
+\label{eq:kd}
+\end{equation}
+with teacher logits $t$, student logits $s$, temperature $T$ and mixing weight $\alpha$. Rows without a hard label contribute only to the KL term. We sweep $T\in\{1,2,4\}$ and $\alpha\in\{0.3,0.5,0.7\}$ and select the pair with the best mean development macro-F1, separately for each condition and student family. Students are either linear or a small MLP (64 hidden units) on a 2{,}000-feature unigram TF-IDF view.
+
+\section{System Architecture}
+Figures~\ref{fig:t1}--\ref{fig:t3} show the architecture of the three tasks implemented in the accompanying code. Task~1 (Figure~\ref{fig:t1}) is the self-training loop: the seed set trains a round-0 teacher and a verifier, and each round selects candidates, retrains a copy and either accepts or rolls back the round on the development split; gold labels of the pool feed only a monitoring step, and the test split is read once at the end. Task~2 (Figure~\ref{fig:t2}) is distillation: a teacher trained on all gold labels produces logits that train a hard-label student, distilled students over the $(T,\alpha)$ grid and a character-LR baseline, with $(T,\alpha)$ chosen on development data. Task~3 (Figure~\ref{fig:t3}) merges them: the loop yields a round-0 and a final teacher, both distilled into the same student architecture on a transfer set whose hard labels exist only for the seed set, with reference students that frame whether any gain survives compression.
+
+\begin{figure}[p]
+\centering
+\includegraphics[height=0.80\textheight]{../docs/img/task1_recursive.png}
+\caption{Task~1 architecture: verified self-training with development-set roll-back. Gold labels of the unlabeled pool are used only for monitoring.}\label{fig:t1}
+\end{figure}
+\begin{figure}[p]
+\centering
+\includegraphics[height=0.78\textheight]{../docs/img/task2_distillation.png}
+\caption{Task~2 architecture: knowledge distillation from a full-label teacher into a small student, with a hard-label student and a character-LR baseline.}\label{fig:t2}
+\end{figure}
+\begin{figure}[p]
+\centering
+\includegraphics[height=0.78\textheight]{../docs/img/task3_merged.png}
+\caption{Task~3 architecture: the self-training loop produces two teachers that are distilled into students; hard labels exist only on the seed set.}\label{fig:t3}
+\end{figure}
+
+\section{Results}
+All results are test macro-F1 (mean $\pm$ s.d.\ over \nSeeds{} paired seeds) unless stated; ``$\Delta$'' is the paired difference to the seed-only teacher with its 95\% bootstrap CI.
+
+\subsection{Baselines and published reference points}
+At 20 labels per class the seed-only MLP teacher scores \fMainSeedOnly{} and the seed-only char-LR scores \fCharSeedOnly{}; the char-LR is better on every seed (paired difference \cmpCharVsMlp{}, Wilcoxon $p$ = \pCharVsMlp). Table~\ref{tab:ref} lists published Amharic results from the MasakhaNEWS paper. They use weighted F1, pretrained encoders and, for few-shot methods, different draws of labelled examples, so they are reference points rather than comparisons. They indicate that our TF-IDF models are well below what encoders and few-shot methods reach at the same label budget, which is an important limit on how far our conclusions about self-training can be generalised.
+
+\begin{table}[t]
+\centering\small
+\caption{Published Amharic MasakhaNEWS results (weighted F1, \citealp{adelani2023masakhanews}), shown for orientation only. ``$k$ shots'' means $k$ labelled articles per class.}\label{tab:ref}
+\begin{tabular}{lccccc}
+\toprule
+Method & 10 shots & 20 shots & 50 shots & Full training set \\
+\midrule
+PET (AfroXLMR-large) & 91.1 & 92.7 & 92.9 & -- \\
+Fine-tuned AfroXLMR-large & 75.5 & 88.5 & 91.4 & 94.4 \\
+Fine-tuned LaBSE & 79.0 & 90.3 & 89.6 & 92.5 \\
+SetFit (LaBSE) & 84.8 & 87.9 & 88.6 & -- \\
+Fine-tuned AfroXLMR-base & -- & -- & -- & 94.2 \\
+Count-vector MLP & -- & -- & -- & 92.0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Self-training with the MLP teacher}
+Table~\ref{tab:main} gives the central comparison. The verified loop (confidence, agreement, roll-back) is statistically indistinguishable from doing nothing: $\Delta$ = \cmpMainVerified (Wilcoxon $p$ = \pMainVerified) and the equivalence test supports a true effect within $\pm0.01$ ($p$ = \tostMainVerified). The loop accepted only about \accMainVerified{} pseudo-labels on average. Without roll-back the loop is clearly harmful: $\Delta$ = \cmpMainNaive, improving on \nimpMainNaive{} seeds (Wilcoxon $p$ = \pMainNaive), even though the precision of the accepted set is \precMainNaive.
+
+\begin{table}[t]
+\centering\small
+\caption{MLP teacher, 20 labels per class, \nSeeds{} paired seeds. PL precision = precision of accepted pseudo-labels against hidden gold labels. ``Accepted'' = mean size of the accepted set.}\label{tab:main}
+\resizebox{\textwidth}{!}{\input{tables2/main.tex}}
+\end{table}
+
+\subsection{Why the unprotected loop collapses}
+Table~\ref{tab:classes} shows what the loops accepted. The naive loop accepts on average \accNaiveSports{} sports, \accNaiveHealth{} health, \accNaivePolitics{} politics and \accNaiveBusiness{} business articles, i.e.\ roughly 1\% of the business pool against 78\% of the sports pool. Precision is high because the accepted articles are the easy ones; the training set they create is nonetheless unrepresentative, and the teacher retrained on it drifts towards the over-represented class.
+
+\begin{table}[t]
+\centering\small
+\caption{Accepted pseudo-labels per class at the end of the loop (mean over seeds; acceptance rate $=$ accepted / pool size of that class in parentheses).}\label{tab:classes}
+\resizebox{\textwidth}{!}{\input{tables2/classes.tex}}
+\end{table}
+
+Table~\ref{tab:diag} shows why. The raw MLP teacher is strongly underconfident: its mean confidence is only \meanConfMlp{} against accuracy \accRoundZeroMlp{} on test, and the share of pool articles above 0.9 confidence is \shareZeroNineMlpSports\% for sports but \shareZeroNineMlpBusiness\% for business. Business also has the lowest recall (\recallMlpBusiness) and the lowest mean confidence (\meanConfMlpBusiness), while ``confidently wrong'' business predictions are rare (\cwrongMlpBusiness{} per seed on average). So the conjecture from our earlier study is supported: business is not mislabelled with high confidence, it simply almost never reaches the threshold. The confusion matrix in the appendix shows business articles are mostly confused with health and politics. With a single global threshold, a teacher in this regime selects almost exclusively the class it is most confident about.
+
+\begin{table}[t]
+\centering\small
+\caption{Round-0 confidence diagnostics on the unlabeled pool (mean over seeds): mean and median confidence per true class, share above the 0.9 threshold, confidently wrong predictions (count per seed) and recall. The calibrated char-LR is shown for contrast.}\label{tab:diag}
+\resizebox{\textwidth}{!}{\input{tables2/diag_class.tex}}
+\end{table}
+
+\subsection{Class-aware selection}
+Table~\ref{tab:main} also reports two interventions that do not touch the teacher. A per-class cap alone is not enough: it reduces the damage (\cmpCapVsNaive{} relative to the naive loop) but still ends below the seed-only teacher ($\Delta$ = \cmpMainCap), because it only limits the dominant class and does nothing for the starved one. Balanced top-$k$ selection, which forces every class into every round, removes the collapse and gives a consistent gain: $\Delta$ = \cmpMainBalanced, improved on \nimpMainBalanced{} seeds, Wilcoxon $p$ = \pMainBalanced, with precision \precMainBalanced{} and maximal class entropy (Table~\ref{tab:classes}). Adding roll-back to balanced selection shrinks the gain to $\Delta$ = \cmpMainBalancedRb ($p$ = \pMainBalancedRb): the development set rejects some rounds that were in fact helpful. Class composition of the accepted set is therefore a causal ingredient of the failure and not just a correlate, at least in this setting.
+
+\subsection{The verifier}\label{sec:verifier}
+Table~\ref{tab:verifier} reports how often the verifier disagrees with a teacher prediction that passed the selection rule, and who is right when it does. For the verified MLP loop it never disagreed (\verMainDis{} of \verMainSel{} selected pseudo-labels); even in the naive loop, which selects many more articles, it disagreed on \verNaiveDis{} of \verNaiveSel{}. With the char-LR teacher the verifier disagrees more often (\verCharDis{} of \verCharSel{}), but the teacher was right in \verCharTeacherRight{} of those cases and the verifier in \verCharVerRight. At a lower threshold of 0.7, it vetoes \verThrDis{} of \verThrSel{} candidates (\verThrRate\%), and in \verThrTeacherRight{} of them the vetoed teacher label was correct against \verThrVerRight{} where the verifier was. The reason is visible in Table~\ref{tab:vercorr}: teacher and verifier errors are strongly correlated (error correlation $\phi$ = \phiMlp for MLP versus char-LR and $\phi$ = \phiCharlr for char-LR versus word-LR), and when the teacher is wrong the verifier is right only \pvrMlp{} (respectively \pvrCharlr) of the time. A second view built from the same few labels shares the first view's blind spots, so ``agreement'' filters out little and ``disagreement'' mostly removes correct pseudo-labels. Direct effect on accuracy: verified minus confidence-plus-roll-back for the char-LR teacher is \cmpCharAgreeEffect{} ($p$ = \pCharAgreeEffect).
+
+\begin{table}[t]
+\centering\small
+\caption{Verifier activity: candidates that passed the selection rule, disagreements with the verifier, and who was correct on the disagreements (counts summed over seeds).}\label{tab:verifier}
+\input{tables2/verifier.tex}
+\end{table}
+\begin{table}[t]
+\centering\small
+\caption{Error dependence between teacher and verifier on the test set (mean over seeds).}\label{tab:vercorr}
+\resizebox{\textwidth}{!}{\input{tables2/verifier_corr.tex}}
+\end{table}
+
+\subsection{A stronger, calibrated teacher}
+Table~\ref{tab:charlr} repeats the loop with a char-LR teacher whose confidence is temperature-scaled on the development set. The picture changes. There is no collapse: even the naive loop improves ($\Delta$ = \cmpCharNaive, $p$ = \pCharNaive), and the verified loop gains $\Delta$ = \cmpCharVerified (improved on \nimpCharVerified{} seeds, $p$ = \pCharVerified). Agreement and roll-back add essentially nothing over confidence alone. Lowering the threshold to 0.7 gives the best result, $\Delta$ = \cmpCharVerifiedThrZeroSeven (\nimpCharVerifiedThrZeroSeven{} seeds). Without calibration, almost nothing passes the 0.9 threshold and the loop does nothing ($\Delta$ = \cmpCharVerifiedUncal), which re-states the role of calibration. Balanced selection with roll-back does not help this teacher ($\Delta$ = \cmpCharBalancedRb, $p$ = \pCharBalancedRb).
+
+\begin{table}[t]
+\centering\small
+\caption{Char-LR teacher with temperature-scaled confidence, 20 labels per class, \nSeeds{} paired seeds.}\label{tab:charlr}
+\resizebox{\textwidth}{!}{\input{tables2/charlr.tex}}
+\end{table}
+
+\subsection{Development-set optimism, thresholds and label budgets}
+\paragraph{Development optimism.} The verified MLP loop improves the development macro-F1 by \devGainVerified{} on average (paired CI \cmpDevVerified), against a bootstrap standard error of the development estimate of \devSeVerified{} on 188 articles; in \devGainGtTwoSe{} of \nSeeds{} seeds does the gain exceed two standard errors, and in \testCiExclVerified{} of \nSeeds{} seeds does the within-seed test-bootstrap interval of the change exclude zero (for the naive loop: \testCiExclNaive{}). Roll-back on 188 articles is thus a coarse instrument: it catches the large collapse but cannot certify small gains. An acceptance margin of 0.01 changed nothing measurable ($\Delta$ = \cmpMainVerifiedMargin).
+
+\paragraph{Threshold sensitivity.} Table~\ref{tab:thr} shows that part of the MLP collapse is a threshold artefact: with the unprotected loop at thresholds 0.5 and 0.7 the loop improves (\thrZeroFiveNaive{} and \thrZeroSevenNaive{} against \thrZeroNineNaive{} at 0.9), because enough articles from every class pass. Confidence thresholds therefore need to be chosen with the class composition of the accepted set in mind, not only the precision.
+
+\paragraph{Label budget.} Table~\ref{tab:budget} varies the labels per class (five seeds). The seed-only teacher improves quickly with more labels. The naive loop is the least reliable variant, with by far its largest loss at 20 labels per class; at 10 labels per class it matches the other variants. We do not have an explanation beyond the interaction between teacher confidence and the fixed threshold.
+
+\begin{table}[t]
+\centering\small
+\caption{MLP teacher, naive and verified loops at confidence thresholds 0.5, 0.7 and 0.9 (five seeds; $\Delta$ relative to the seed-only teacher of the same seeds).}\label{tab:thr}
+\resizebox{\textwidth}{!}{\input{tables2/threshold.tex}}
+\end{table}
+\begin{table}[t]
+\centering\small
+\caption{Test macro-F1 by label budget (MLP teacher, threshold 0.9, five seeds).}\label{tab:budget}
+\resizebox{\textwidth}{!}{\input{tables2/budget.tex}}
+\end{table}
+
+\input{part_b.tex}
