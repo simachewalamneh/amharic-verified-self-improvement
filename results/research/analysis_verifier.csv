@@ -1,0 +1,13 @@
+suite,variant,selected,disagreements,disagree_rate,teacher_correct_on_disagree,verifier_correct_on_disagree
+main,balanced,2000,0,0.0,0,0
+main,balanced_rb,1600,0,0.0,0,0
+main,cap,995,0,0.0,0,0
+main,naive,3374,29,0.008595139300533492,25,4
+main,verified,983,0,0.0,0,0
+main,verified_margin,574,0,0.0,0,0
+charlr,balanced_rb,1320,0,0.0,0,0
+charlr,conf_rb,10396,98,0.009426702577914583,86,12
+charlr,naive,8685,130,0.014968336211859529,117,13
+charlr,verified,10366,207,0.019969129847578624,188,19
+charlr,verified_thr0.7,12035,1258,0.10452845866223515,1013,198
+charlr,verified_uncal,1558,0,0.0,0,0
