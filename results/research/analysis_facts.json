@@ -1,0 +1,8 @@
+{
+  "dev_gain_mean": 0.00934486142134917,
+  "dev_se_mean": 0.008477719122901255,
+  "dev_gain_gt_2se": 0,
+  "test_ci_excludes_zero_verified": 0,
+  "test_ci_excludes_zero_naive": 10,
+  "n_seeds_main": 10
+}
