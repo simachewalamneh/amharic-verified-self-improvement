@@ -1,0 +1,12 @@
+\begin{tabular}{llrrrrr}
+\toprule
+Teacher & Variant & Selected & Disagreements & Rate (\%) & Teacher right & Verifier right \\
+\midrule
+MLP & naive & 3374 & 29 & 0.9 & 25 & 4 \\
+MLP & verified & 983 & 0 & 0.0 & 0 & 0 \\
+Char-LR & naive & 8685 & 130 & 1.5 & 117 & 13 \\
+Char-LR & confidence + rollback & 10396 & 98 & 0.9 & 86 & 12 \\
+Char-LR & verified & 10366 & 207 & 2.0 & 188 & 19 \\
+Char-LR & verified, thr.\ 0.7 & 12035 & 1258 & 10.5 & 1013 & 198 \\
+\bottomrule
+\end{tabular}
