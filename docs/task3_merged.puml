@@ -1,0 +1,52 @@
+@startuml task3_merged
+skinparam dpi 220
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 12
+skinparam roundCorner 14
+skinparam ArrowColor #3C4858
+skinparam ActivityBackgroundColor #F4F7FB
+skinparam ActivityBorderColor #5B7DB1
+skinparam NoteBackgroundColor #FFF8E1
+skinparam NoteBorderColor #C9A227
+skinparam PartitionBorderColor #9AA5B1
+skinparam PartitionFontStyle bold
+skinparam wrapWidth 330
+skinparam NoteTextAlignment left
+title Task 3: Merged pipeline (recursive learning, then distillation)
+
+partition "1. Data" #E8F0FE {
+  start
+  :Split train into seed set S (80 gold labels) and\nunlabeled pool U, exactly as in Task 1;
+  :Build the transfer set: inputs = S + U,\nhard labels only on S (label -1 elsewhere);
+  note right
+    The cross-entropy term ignores unlabeled rows, so no
+    pseudo-label or hidden gold label reaches a
+    student through the hard-label term.
+  end note
+}
+partition "2. Recursive learning (Task 1 loop)" #E6F4EA {
+  :Run the verified loop: confidence + agreement + dev roll-back;
+  :Keep two teachers: **f0** (seed only) and **f_final** (after the loop);
+}
+partition "3. Distillation (Task 2 code)" #FCE8E6 {
+  :Read (T, alpha) chosen on dev in Task 2 (results/task2/best.json);
+  :Train five students:\n(a) distilled from f0\n(b) distilled from f_final\n(c) hard labels, S only\n(d) hard labels, S + accepted pseudo-labels\n(e) reference: teacher on ALL gold labels, distilled;
+}
+partition "4. Evaluation" #FEF3E0 {
+  :Evaluate teachers and students on dev and test:\nmacro-F1, ECE, size, latency;
+  :Per-seed paired gain (final - round 0)\nfor the teacher and for the student;
+  if (gain survives distillation?) then (yes)
+    :Loop improvement transfers to the small model;
+  else (no)
+    :Null result: gain absent or lost after distillation;
+  endif
+  :Save results/task3 (all_runs, summary, gain_survival);
+  stop
+}
+legend right
+  **Question answered**
+  Does any teacher improvement from self-training
+  survive compression into a student?
+end legend
+@enduml
