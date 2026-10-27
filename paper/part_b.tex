@@ -1,0 +1,91 @@
+\subsection{Distillation: compression, not accuracy}\label{sec:distill}
+Table~\ref{tab:dist} separates two supervision conditions that the earlier study mixed. In the \emph{full-label} condition the teacher is trained on all 1{,}311 gold labels and the student sees all training inputs with gold labels (teacher macro-F1 \dsTeacherFullLinear). Soft targets change accuracy by \dsDiffFullLinear{} for a linear student (Wilcoxon $p$ = \dsPFullLinear) and \dsDiffFullMlp{} for an MLP student ($p$ = \dsPFullMlp); both are equivalent to hard-label training within $\pm0.01$ (TOST $p<0.001$). Soft targets did lower the calibration error (\dsDeceFullLinear{} and \dsDeceFullMlp{} ECE respectively). In the \emph{low-label} condition the teacher is trained on the 80 seed labels, and the student sees seed and pool inputs with hard labels on the seed set only. Here soft targets \emph{hurt}: \dsDiffLowLinear{} for the linear student ($p$ = \dsPLowLinear) and \dsDiffLowMlp{} for the MLP student ($p$ = \dsPLowMlp), relative to a student trained on the seed labels alone. A teacher with macro-F1 \dsTeacherLowLinear{} passes on its own errors, and the student has no other source of information. The extension used a reduced $(T,\alpha)$ grid ($T\in\{2,4\}$, $\alpha\in\{0.3,0.7\}$), selected on development data; the earlier three-seed sweep over a $3\times3$ grid also found no accuracy gain.
+
+\begin{table}[t]
+\centering\small
+\caption{Distillation extension (\nSeeds{} paired seeds): student macro-F1 with hard labels versus the dev-selected distilled student, paired difference with 95\% CI, Wilcoxon $p$, and change in ECE. ``All gold labels'': teacher and student see all training labels. ``80 labels'': teacher trained on the seed set; students see seed and pool inputs, hard labels only on the seed set.}\label{tab:dist}
+\resizebox{\textwidth}{!}{\input{tables2/distill_ext.tex}}
+\end{table}
+
+\paragraph{Compression.} The linear student has 8{,}004 parameters against 2{,}561{,}284 for the MLP teacher (about 320 times fewer) and a serialised size of 33~KB against about 10~MB. Measured as a forward pass on precomputed features, the student is about 3.4 times faster (Task~2); including vectorisation and sparse-tensor construction for a single article, the end-to-end speed-up is only \latSpeedup{} times (Table~\ref{tab:lat}: \latTeacher{} ms against \latStudent{} ms), because TF-IDF extraction does not shrink with the model. The cost in accuracy is about 0.7 to 0.9 macro-F1 points relative to the full-label teacher.
+
+\begin{table}[t]
+\centering\small
+\caption{Single-article latency on one CPU thread (median over 200 test articles).}\label{tab:lat}
+\input{tables2/latency.tex}
+\end{table}
+
+\subsection{The merged pipeline}
+Table~\ref{tab:t3} gives the merged results over \mergedN{} seeds. The loop's teacher improves on the development set (\mergedGainTeacherDev{}, Wilcoxon $p$ = \mergedPTeacherDev) but not on the test set (\mergedGainTeacherTest{}, $p$ = \mergedPTeacherTest): the development gain is a selection effect, not an improvement that generalises. Accordingly there is no gain for distillation to preserve: students distilled from the loop's teacher and from the round-0 teacher differ by \mergedGainStudentTest{} on test ($p$ = \mergedPStudentTest). Both distilled students are below a student trained on the seed labels alone (\mergedDistVsSeedHard{} for the loop's student, $p$ = \mergedPDistVsSeedHard), consistent with Section~\ref{sec:distill}.
+
+\begin{table}[t]
+\centering\small
+\caption{Merged pipeline, \mergedN{} paired seeds. ``(ref.)'' rows use all gold labels and are upper references, not comparable under the same label budget.}\label{tab:t3}
+\input{tables2/task3.tex}
+\end{table}
+
+\section{Discussion}
+\paragraph{Per-item precision is not enough; composition and calibration matter.} A pseudo-label set can be nearly perfectly accurate and still be a bad training set. In our setting the cause appears to be a confidence threshold applied to an underconfident, class-uneven teacher. Using a calibrated, stronger teacher or a lower threshold removed the collapse, and forcing balanced per-class selection turned it into a consistent gain. We did not isolate calibration for the MLP teacher itself (temperature scaling was applied only to the char-LR teacher), so the role of calibration there rests on the diagnostics in Table~\ref{tab:diag} and the threshold study. We therefore recommend that self-training studies report per-class acceptance rates and the class entropy of the accepted set alongside precision, and that they calibrate confidence before thresholding it. The balanced rule assumes a roughly uniform class prior; for imbalanced data a prior estimate or a rebalancing method \citep{wei2021crest,wang2022debiased} is needed.
+
+\paragraph{A feature-diverse verifier is not an independent one.} Our verifier shares the teacher's few labels; its errors correlate strongly with the teacher's, so agreement is weak evidence and disagreement is more often the verifier's mistake. A verifier that adds information would need different supervision or different data, for example a pretrained encoder, rather than another view of the same eighty labels.
+
+\paragraph{Roll-back is protective, not diagnostic.} It stops the large collapse, but with 188 development articles it cannot separate small gains from noise. The loop's development gain was statistically detectable across seeds while its test change was not, which is the signature of selection on a small set. Reporting both, with intervals, makes this visible.
+
+\paragraph{Distillation helps size, not accuracy, and cannot repair a weak teacher.} With a strong teacher, distillation preserved accuracy and improved calibration; with the low-label teacher it reduced accuracy. The speed-up depends on where latency is measured.
+
+\section{Limitations}
+\begin{itemize}
+\item \textbf{Feature-based models.} All models use TF-IDF features, so that everything runs on a CPU. Published encoder and few-shot results on the same dataset are much stronger (Table~\ref{tab:ref}); we did not run AfroXLMR or AfriBERTa teachers, and our conclusions may differ with them.
+\item \textbf{One dataset, one language, four classes.} Paired seeds quantify seed-set and initialisation variance, not variation across datasets or languages. The collapse we diagnose depends on the teacher and the threshold (Tables~\ref{tab:charlr}, \ref{tab:thr}).
+\item \textbf{Development set used twice.} It serves for calibration and for roll-back (and for selecting distillation hyper-parameters); a separate acceptance split would avoid this.
+\item \textbf{Calibration of the MLP teacher was not tested in isolation}, and balanced selection assumes balanced classes and was not tested on imbalanced data. Its budget $k$ and floor were fixed once and not tuned.
+\item \textbf{Exploratory origins and multiple comparisons.} The interventions were suggested by an initial three-seed study whose test results we inspected; we report many paired tests without correction and the 95\% intervals should be read as descriptive.
+\item \textbf{Reduced grids.} The distillation extension used a $2\times2$ $(T,\alpha)$ grid; label-budget and threshold studies used five seeds.
+\item \textbf{Hardware-dependent latency.} Measurements are single-thread CPU timings on one machine.
+\item \textbf{Licence.} Licensing information for the dataset is inconsistent across sources (Section~3); we redistribute no data.
+\end{itemize}
+
+\section{Conclusion}
+In a low-label Amharic news setting, a high-precision pseudo-label set from a confidence-thresholded loop can still collapse a teacher, because the set is class-skewed. The failure comes from an underconfident teacher meeting a single global threshold; it disappears with a calibrated, stronger teacher, a lower threshold or class-balanced selection, and the latter gives a small but consistent gain. A second-view verifier built from the same labels contributes almost nothing, development-set roll-back protects against collapse without certifying gains, and distillation compresses a strong teacher without changing accuracy but cannot rescue a weak one. The most useful next steps are encoder-based teachers, a comparison across MasakhaNEWS languages, imbalanced class priors, and conformal or uncertainty-based selection.
+
+\section*{Reproducibility}
+{\sloppy Code, configurations, seed-set indices (\texttt{results/research/seed\_sets.json}), per-run results and table generators are at \url{https://github.com/simachewalamneh/amharic-verified-self-improvement}. Tables and numbers in this paper are generated from the result files by \texttt{paper/make\_tables2.py}; the architecture diagrams are in \texttt{docs/}. See Appendix~\ref{app:repro} for settings and commands.}
+
+\section*{Acknowledgments}
+[To be completed: collaborators, supervisors, and the iCog Labs training programme.]
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\appendix
+\section{Reproducibility details}\label{app:repro}
+\paragraph{Environment.} Python 3.12.3, NumPy 2.4.4, SciPy 1.17.1, scikit-learn 1.8.0, PyTorch 2.14.1 (CPU), pandas 3.0.2. All runs used a single CPU thread-pool on one Intel Xeon core; no GPU.
+
+\paragraph{Settings.} TF-IDF: word 1--2-gram (10{,}000 features, min\_df 2, sublinear), word unigram (2{,}000), character 2--4-gram (50{,}000). Teacher MLP: 256 hidden units, dropout 0.5, Adam (lr $10^{-3}$, weight decay $10^{-4}$), 30 epochs, batch 32. Linear student: 60 epochs, lr $5\times10^{-3}$. MLP student: 64 hidden units, dropout 0.3, 60 epochs, lr $2\times10^{-3}$. Loop: at most 5 rounds, threshold 0.9, stop after two consecutive roll-backs, $k=10$, balanced floor 0.5. Seeds 0--9 (budget study and threshold study: seeds 0--4).
+
+\paragraph{Commands.}
+\begin{verbatim}
+python data/download.py
+python -m task1_recursive.run
+python -m task2_distillation.run
+python -m task3_merged.run
+python -m research.suite --suite all
+python -m research.diagnostics
+python -m research.distill_ext
+python -m research.latency_e2e
+python -m research.stats
+python paper/make_tables2.py
+\end{verbatim}
+
+\section{Additional diagnostics}
+\begin{table}[h]
+\centering\small
+\caption{Round-0 MLP reliability on the test set, pooled over seeds (15 equal-width bins; empty bins omitted). The teacher is underconfident: accuracy exceeds mean confidence in nearly every populated bin.}
+\input{tables2/reliability.tex}
+\end{table}
+\begin{table}[h]
+\centering\small
+\caption{Round-0 MLP confusion matrix on the test set, summed over seeds (rows: true class).}
+\input{tables2/confusion.tex}
+\end{table}
+\end{document}
