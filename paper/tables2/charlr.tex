@@ -1,0 +1,14 @@
+\begin{tabular}{lccccc}
+\toprule
+Variant & Test macro-F1 & $\Delta$ vs seed-only [95\% CI] & Wilcoxon $p$ & Accepted & PL precision \\
+\midrule
+Seed-only char-LR (calibrated) & 0.869\,$\pm$\,0.016 & -- & -- & 0 & -- \\
+\addlinespace
+Naive (no rollback) & 0.889\,$\pm$\,0.014 & +0.020 [+0.010, +0.030] & 0.004 & 868 & 0.966 \\
+Confidence + rollback & 0.887\,$\pm$\,0.014 & +0.017 [+0.007, +0.028] & 0.016 & 613 & 0.970 \\
+Verified (agreement + rollback) & 0.888\,$\pm$\,0.013 & +0.019 [+0.009, +0.029] & 0.016 & 629 & 0.970 \\
+Verified, threshold 0.7 & 0.898\,$\pm$\,0.009 & +0.028 [+0.023, +0.033] & 0.002 & 1019 & 0.939 \\
+Verified, uncalibrated confidence & 0.869\,$\pm$\,0.016 & $-$0.000 [$-$0.000, +0.000] & 0.500 & 15 & 0.978 \\
+Balanced top-$k$ + rollback & 0.872\,$\pm$\,0.016 & +0.002 [$-$0.003, +0.007] & 0.562 & 68 & 0.972 \\
+\bottomrule
+\end{tabular}
