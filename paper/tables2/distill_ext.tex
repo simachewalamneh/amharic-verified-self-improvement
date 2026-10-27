@@ -1,0 +1,10 @@
+\begin{tabular}{llcccccc}
+\toprule
+Condition & Student & $(T,\alpha)$ & Hard F1 & Distilled F1 & $\Delta$ [95\% CI] & Wilcoxon $p$ & $\Delta$ECE \\
+\midrule
+All gold labels & Linear & (4, 0.3) & 0.901 & 0.899 & $-$0.001 [$-$0.003, +0.000] & 0.152 & $-$0.019 \\
+All gold labels & MLP (64) & (2, 0.3) & 0.893 & 0.894 & +0.001 [$-$0.002, +0.004] & 0.846 & $-$0.009 \\
+80 labels & Linear & (4, 0.3) & 0.831 & 0.817 & $-$0.014 [$-$0.019, $-$0.008] & 0.004 & $-$0.037 \\
+80 labels & MLP (64) & (2, 0.3) & 0.831 & 0.815 & $-$0.017 [$-$0.024, $-$0.010] & 0.002 & +0.127 \\
+\bottomrule
+\end{tabular}
