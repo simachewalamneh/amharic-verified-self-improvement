@@ -1,0 +1,63 @@
+@startuml task1_recursive
+skinparam dpi 220
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 12
+skinparam roundCorner 14
+skinparam ArrowColor #3C4858
+skinparam ActivityBackgroundColor #F4F7FB
+skinparam ActivityBorderColor #5B7DB1
+skinparam NoteBackgroundColor #FFF8E1
+skinparam NoteBorderColor #C9A227
+skinparam PartitionBorderColor #9AA5B1
+skinparam PartitionFontStyle bold
+skinparam wrapWidth 330
+skinparam NoteTextAlignment left
+title Task 1: Verified recursive self-training
+
+partition "1. Data and splits" #E8F0FE {
+  start
+  :Load MasakhaNEWS (Amharic): train 1,311 / dev 188 / test 376;
+  :Split train into **seed set S** (20 gold labels per class)\nand **unlabeled pool U** (labels hidden);
+  note right
+    Gold labels of U are never trained on.
+    They are read only to MEASURE pseudo-label
+    precision and class mix.
+  end note
+}
+partition "2. Models" #E6F4EA {
+  :Train round-0 teacher f0 on S\n(MLP, word 1-2-gram TF-IDF);
+  :Fit cross-representation verifier v on S\n(logistic regression, character 2-4-gram TF-IDF);
+  note right
+    v sees the same labels as f0 but a different
+    feature view: feature-diverse, not
+    statistically independent.
+  end note
+  :Score f0 on dev: current score s = dev macro-F1;
+}
+partition "3. Loop (at most 5 rounds)" #FEF3E0 {
+  repeat
+    :Teacher predicts the remaining pool U \ A;
+    :Select candidates C: confidence >= 0.9\n(and v predicts the same class);
+    :Log #selected, #disagreements, pseudo-label precision,\nper-class accepted counts, class entropy;
+    :Retrain a fresh copy f' on S + A + C;
+    :Evaluate f' on dev;
+    if (dev macro-F1 of f' >= s ?) then (yes)
+      :**ACCEPT**: f <- f', A <- A + C, s <- dev F1;
+    else (no)
+      :**ROLL BACK**: discard C, keep f;
+    endif
+  repeat while (round < 5 and fewer than\n2 consecutive roll-backs?) is (continue) not (stop)
+}
+partition "4. Final evaluation" #FCE8E6 {
+  :Evaluate f0 and the final teacher on the **test split, once**;
+  :Save per-round log and summaries to results/task1;
+  stop
+}
+legend right
+  **Variants compared**
+  verified: confidence + agreement + roll-back
+  confidence-only: no agreement check
+  naive: no roll-back (every round accepted)
+end legend
+@enduml
