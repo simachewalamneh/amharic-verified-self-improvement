@@ -94,22 +94,12 @@ A student is trained with
 with teacher logits $t$, student logits $s$, temperature $T$ and mixing weight $\alpha$. Rows without a hard label contribute only to the KL term. We sweep $T\in\{1,2,4\}$ and $\alpha\in\{0.3,0.5,0.7\}$ and select the pair with the best mean development macro-F1, separately for each condition and student family. Students are either linear or a small MLP (64 hidden units) on a 2{,}000-feature unigram TF-IDF view.
 
 \section{System Architecture}
-Figures~\ref{fig:t1}--\ref{fig:t3} show the architecture of the three tasks implemented in the accompanying code. Task~1 (Figure~\ref{fig:t1}) is the self-training loop: the seed set trains a round-0 teacher and a verifier, and each round selects candidates, retrains a copy and either accepts or rolls back the round on the development split; gold labels of the pool feed only a monitoring step, and the test split is read once at the end. Task~2 (Figure~\ref{fig:t2}) is distillation: a teacher trained on all gold labels produces logits that train a hard-label student, distilled students over the $(T,\alpha)$ grid and a character-LR baseline, with $(T,\alpha)$ chosen on development data. Task~3 (Figure~\ref{fig:t3}) merges them: the loop yields a round-0 and a final teacher, both distilled into the same student architecture on a transfer set whose hard labels exist only for the seed set, with reference students that frame whether any gain survives compression.
+Figure~\ref{fig:arch} shows the merged architecture implemented in the accompanying code. \emph{Recursive learning} (left): a teacher trained on the 80 seed labels pseudo-labels the unlabeled pool, only verified predictions are admitted, and a fresh copy of the teacher is retrained on the seed set plus the accepted pseudo-labels. \emph{Knowledge distillation} (centre): the resulting teacher supplies soft targets that, together with gold labels, train a small student under the combined loss of Equation~\eqref{eq:kd}. \emph{Evaluation and safeguards} (right): a development-set gate accepts or rolls back each round, gold labels of the pool are used only for monitoring, and the test split is read once at the end. The same components also run on their own: the left pillar alone is the self-training experiment (Task~1), the centre pillar with a full-label teacher is the distillation experiment (Task~2), and the whole pipeline is the merged experiment (Task~3). Detailed flowcharts and an entity-relationship diagram are in the repository (\texttt{docs/}).
 
-\begin{figure}[p]
+\begin{figure}[t]
 \centering
-\includegraphics[height=0.80\textheight]{../docs/img/task1_recursive.png}
-\caption{Task~1 architecture: verified self-training with development-set roll-back. Gold labels of the unlabeled pool are used only for monitoring.}\label{fig:t1}
-\end{figure}
-\begin{figure}[p]
-\centering
-\includegraphics[height=0.78\textheight]{../docs/img/task2_distillation.png}
-\caption{Task~2 architecture: knowledge distillation from a full-label teacher into a small student, with a hard-label student and a character-LR baseline.}\label{fig:t2}
-\end{figure}
-\begin{figure}[p]
-\centering
-\includegraphics[height=0.78\textheight]{../docs/img/task3_merged.png}
-\caption{Task~3 architecture: the self-training loop produces two teachers that are distilled into students; hard labels exist only on the seed set.}\label{fig:t3}
+\includegraphics[width=\textwidth]{../docs/abstract/merged_overview.pdf}
+\caption{Merged architecture: verified self-training (left), knowledge distillation (centre) and evaluation safeguards (right). The dashed arrow shows the development-set gate that accepts or rolls back each round.}\label{fig:arch}
 \end{figure}
 
 \section{Results}
