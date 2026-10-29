@@ -3,9 +3,23 @@
 Verified recursive self-training and knowledge distillation for Amharic news topic classification (MasakhaNEWS), with a merged pipeline.
 iCog Labs AI Internship, *Emerging AI Paradigms* assignment. Three separate tasks in one repo.
 
+## Start here
+
+**Assignment deliverables (Emerging AI Paradigms)**
+- Task 1, recursive learning: `task1_recursive/`
+- Task 2, knowledge distillation: `task2_distillation/`
+- Task 3, merged pipeline: `task3_merged/`
+- Experiment report with limitations: `results/report/report.pdf`
+- Architecture diagrams: `docs/`
+
+**Beyond the assignment (research extension)**
+- `paper/research/`, `results/research/` and `paper/`: 10-seed experiments, class-aware selection, statistics and a draft manuscript. These do not change Tasks 1 to 3.
+
+![Merged architecture](docs/abstract/architecture_merged_overview.png)
+
 ## Data
 Amharic MasakhaNEWS, official splits: 1,311 train / 188 dev / 376 test, 4 classes (business, health, politics, sports).
-`python data/download.py` fetches the TSVs into `data/raw/`. 
+`python data/download.py` fetches the TSVs into `data/raw/`. The data is not redistributed here; sources disagree on its licence (the dataset paper states academic or CC BY-NC 4.0, the Hugging Face card AFL-3.0), so confirm the terms before reuse. 
 
 Protocol: seed set = 20 labelled articles per class (80); rest of train = unlabeled pool (gold labels used only to *measure* pseudo-label precision);
 dev decides accept/rollback and (T, alpha) selection; test is used only for final reporting.
@@ -20,7 +34,7 @@ dev decides accept/rollback and (T, alpha) selection; test is used only for fina
 Run Task 2 before Task 3. Add `--seeds 0` for a quick run, `--set data.source=synthetic` for a smoke test (never report synthetic results).
 Report: `results/report/report.tex` + `results/report/report.pdf` (regenerate with `python results/report/make_report.py`, then `pdflatex`).
 
-## Results (TF-IDF features, 3 seeds, test macro-F1)
+## Results of the original three-seed run (TF-IDF features, test macro-F1)
 - Task 1: verified loop 0.841 vs round-0 teacher 0.846 (no gain); naive loop without rollback 0.713 (degradation despite ~0.97-1.0 pseudo-label precision).
 - Task 2: teacher 0.908 (2.56M params), hard student 0.901, distilled student 0.899 (8,004 params, ~3.4x faster). Distillation did not beat hard labels on F1; it lowered ECE.
 - Task 3: the loop's gain did not appear on test, so there is nothing to survive distillation (null result).
@@ -52,8 +66,8 @@ python -m paper.research.stats
 python paper/make_tables2.py && (cd paper && pdflatex paper_v2 && bibtex paper_v2 && pdflatex paper_v2 && pdflatex paper_v2)
 ```
 
-Architecture diagrams for the three tasks: `docs/ARCHITECTURE.md` (PlantUML sources in `docs/*.puml`, PNGs in `docs/img/`).
-Revised paper: `paper/paper_v2.tex` / `paper_v2.pdf` (the three-seed version stays in `paper/paper.tex`).
+Architecture diagrams: `docs/ARCHITECTURE.md` (overview in `docs/abstract/`, flowcharts in `docs/flowcharts/`, ER model in `docs/er/`, detailed PlantUML in `docs/*.puml`).
+Revised paper: `paper/paper_v2.tex` / `paper_v2.pdf`.
 
 ## Headline findings (10 paired seeds, 20 labels per class, MLP teacher, test macro-F1)
 - Seed-only 0.843; verified loop equivalent within +-0.01; naive loop 0.697 (precision 0.984, 78% of sports vs 1% of business pool accepted).
