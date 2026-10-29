@@ -5,7 +5,7 @@ iCog Labs AI Internship, *Emerging AI Paradigms* assignment. Three separate task
 
 ## Data
 Amharic MasakhaNEWS, official splits: 1,311 train / 188 dev / 376 test, 4 classes (business, health, politics, sports).
-`python data/download.py` fetches the TSVs into `data/raw/`. **License not verified**: check the dataset card/paper before redistributing.
+`python data/download.py` fetches the TSVs into `data/raw/`. 
 
 Protocol: seed set = 20 labelled articles per class (80); rest of train = unlabeled pool (gold labels used only to *measure* pseudo-label precision);
 dev decides accept/rollback and (T, alpha) selection; test is used only for final reporting.

@@ -1,0 +1,138 @@
+\begin{thebibliography}{26}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Adelani et~al.(2023)]{adelani2023masakhanews}
+David~Ifeoluwa Adelani et~al.
+\newblock {MasakhaNEWS}: News topic classification for {African} languages.
+\newblock \emph{arXiv preprint arXiv:2304.09972}, 2023.
+
+\bibitem[Alabi et~al.(2022)Alabi, Adelani, Mosbach, and Klakow]{alabi2022afroxlmr}
+Jesujoba~O. Alabi, David~Ifeoluwa Adelani, Marius Mosbach, and Dietrich Klakow.
+\newblock Adapting pre-trained language models to {African} languages via multilingual adaptive fine-tuning.
+\newblock In \emph{Proceedings of the 29th International Conference on Computational Linguistics}, pages 4336--4349, 2022.
+
+\bibitem[Arazo et~al.(2020)Arazo, Ortego, Albert, O'Connor, and McGuinness]{arazo2020pseudo}
+Eric Arazo, Diego Ortego, Paul Albert, Noel~E. O'Connor, and Kevin McGuinness.
+\newblock Pseudo-labeling and confirmation bias in deep semi-supervised learning.
+\newblock In \emph{International Joint Conference on Neural Networks (IJCNN)}, 2020.
+
+\bibitem[Azime and Mohammed(2021)]{azime2021amharic}
+Israel~Abebe Azime and Nebil Mohammed.
+\newblock An {Amharic} news text classification dataset.
+\newblock \emph{arXiv preprint arXiv:2103.05639}, 2021.
+
+\bibitem[Dror et~al.(2018)Dror, Baumer, Shlomov, and Reichart]{dror2018hitchhiker}
+Rotem Dror, Gili Baumer, Segev Shlomov, and Roi Reichart.
+\newblock The hitchhiker's guide to testing statistical significance in natural language processing.
+\newblock In \emph{Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics}, pages 1383--1392, 2018.
+
+\bibitem[Guo et~al.(2017)Guo, Pleiss, Sun, and Weinberger]{guo2017calibration}
+Chuan Guo, Geoff Pleiss, Yu~Sun, and Kilian~Q. Weinberger.
+\newblock On calibration of modern neural networks.
+\newblock In \emph{Proceedings of the 34th International Conference on Machine Learning}, 2017.
+
+\bibitem[Hinton et~al.(2015)Hinton, Vinyals, and Dean]{hinton2015distilling}
+Geoffrey Hinton, Oriol Vinyals, and Jeff Dean.
+\newblock Distilling the knowledge in a neural network.
+\newblock \emph{arXiv preprint arXiv:1503.02531}, 2015.
+
+\bibitem[Lakens(2017)]{lakens2017equivalence}
+Dani{\"e}l Lakens.
+\newblock Equivalence tests: A practical primer for $t$ tests, correlations, and meta-analyses.
+\newblock \emph{Social Psychological and Personality Science}, 8\penalty0 (4):\penalty0 355--362, 2017.
+
+\bibitem[Lee(2013)]{lee2013pseudo}
+Dong-Hyun Lee.
+\newblock Pseudo-label: The simple and efficient semi-supervised learning method for deep neural networks.
+\newblock In \emph{ICML Workshop on Challenges in Representation Learning}, 2013.
+
+\bibitem[Lienen et~al.(2023)Lienen, Demir, and H{\"u}llermeier]{lienen2023conformal}
+Julian Lienen, Caglar Demir, and Eyke H{\"u}llermeier.
+\newblock Conformal credal self-supervised learning.
+\newblock In \emph{Proceedings of the 12th Symposium on Conformal and Probabilistic Prediction with Applications (COPA)}, volume 204 of \emph{PMLR}, 2023.
+
+\bibitem[Madaan et~al.(2023)]{madaan2023selfrefine}
+Aman Madaan et~al.
+\newblock Self-refine: Iterative refinement with self-feedback.
+\newblock \emph{arXiv preprint arXiv:2303.17651}, 2023.
+
+\bibitem[Ogueji et~al.(2021)Ogueji, Zhu, and Lin]{ogueji2021afriberta}
+Kelechi Ogueji, Yuxin Zhu, and Jimmy Lin.
+\newblock Small data? no problem! exploring the viability of pretrained multilingual language models for low-resourced languages.
+\newblock In \emph{Proceedings of the 1st Workshop on Multilingual Representation Learning}, pages 116--126, 2021.
+
+\bibitem[Rodemann(2023)]{rodemann2023decision}
+Julian Rodemann.
+\newblock Pseudo label selection is a decision problem.
+\newblock \emph{arXiv preprint arXiv:2309.13926}, 2023.
+
+\bibitem[Rodemann et~al.(2023)Rodemann, Jansen, Schollmeyer, and Augustin]{rodemann2023likelihoods}
+Julian Rodemann, Christoph Jansen, Georg Schollmeyer, and Thomas Augustin.
+\newblock In all {LikelihoodS}: How to reliably select pseudo-labeled data for self-training in semi-supervised learning.
+\newblock \emph{arXiv preprint arXiv:2303.01117}, 2023.
+
+\bibitem[Schick and Sch{\"u}tze(2021)]{schick2021pet}
+Timo Schick and Hinrich Sch{\"u}tze.
+\newblock Exploiting cloze-questions for few-shot text classification and natural language inference.
+\newblock In \emph{Proceedings of the 16th Conference of the European Chapter of the Association for Computational Linguistics}, pages 255--269, 2021.
+
+\bibitem[Schuirmann(1987)]{schuirmann1987comparison}
+Donald~J. Schuirmann.
+\newblock A comparison of the two one-sided tests procedure and the power approach for assessing the equivalence of average bioavailability.
+\newblock \emph{Journal of Pharmacokinetics and Biopharmaceutics}, 15\penalty0 (6):\penalty0 657--680, 1987.
+
+\bibitem[Shumailov et~al.(2024)]{shumailov2024collapse}
+Ilia Shumailov et~al.
+\newblock {AI} models collapse when trained on recursively generated data.
+\newblock \emph{Nature}, 631:\penalty0 755--759, 2024.
+
+\bibitem[Sohn et~al.(2020)Sohn, Berthelot, Carlini, Zhang, Zhang, Raffel, Cubuk, Kurakin, and Li]{sohn2020fixmatch}
+Kihyuk Sohn, David Berthelot, Nicholas Carlini, Zizhao Zhang, Han Zhang, Colin~A. Raffel, Ekin~Dogus Cubuk, Alexey Kurakin, and Chun-Liang Li.
+\newblock {FixMatch}: Simplifying semi-supervised learning with consistency and confidence.
+\newblock In \emph{Advances in Neural Information Processing Systems}, volume~33, 2020.
+
+\bibitem[Tunstall et~al.(2022)]{tunstall2022setfit}
+Lewis Tunstall et~al.
+\newblock Efficient few-shot learning without prompts.
+\newblock \emph{arXiv preprint arXiv:2209.11055}, 2022.
+
+\bibitem[Wang et~al.(2023)]{wang2023upet}
+Jianing Wang et~al.
+\newblock Uncertainty-aware parameter-efficient self-training for semi-supervised language understanding.
+\newblock \emph{arXiv preprint arXiv:2310.13022}, 2023.
+
+\bibitem[Wang et~al.(2022)Wang, Wu, Lian, and Yu]{wang2022debiased}
+Xudong Wang, Zhirong Wu, Long Lian, and Stella~X. Yu.
+\newblock Debiased learning from naturally imbalanced pseudo-labels.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, pages 14647--14657, 2022.
+
+\bibitem[Wei et~al.(2021)Wei, Sohn, Mellina, Yuille, and Yang]{wei2021crest}
+Chen Wei, Kihyuk Sohn, Clayton Mellina, Alan Yuille, and Fan Yang.
+\newblock {CReST}: A class-rebalancing self-training framework for imbalanced semi-supervised learning.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, pages 10857--10866, 2021.
+
+\bibitem[Wilcoxon(1945)]{wilcoxon1945individual}
+Frank Wilcoxon.
+\newblock Individual comparisons by ranking methods.
+\newblock \emph{Biometrics Bulletin}, 1\penalty0 (6):\penalty0 80--83, 1945.
+
+\bibitem[Xie et~al.(2020)Xie, Luong, Hovy, and Le]{xie2020noisy}
+Qizhe Xie, Minh-Thang Luong, Eduard Hovy, and Quoc~V. Le.
+\newblock Self-training with noisy student improves {ImageNet} classification.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, 2020.
+
+\bibitem[Yarowsky(1995)]{yarowsky1995unsupervised}
+David Yarowsky.
+\newblock Unsupervised word sense disambiguation rivaling supervised methods.
+\newblock In \emph{Proceedings of the 33rd Annual Meeting of the Association for Computational Linguistics}, pages 189--196, 1995.
+
+\bibitem[Zhang et~al.(2021)Zhang, Wang, Hou, Wu, Wang, Okumura, and Shinozaki]{zhang2021flexmatch}
+Bowen Zhang, Yidong Wang, Wenxin Hou, Hao Wu, Jindong Wang, Manabu Okumura, and Takahiro Shinozaki.
+\newblock {FlexMatch}: Boosting semi-supervised learning with curriculum pseudo labeling.
+\newblock In \emph{Advances in Neural Information Processing Systems}, volume~34, 2021.
+
+\end{thebibliography}

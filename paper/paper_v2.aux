@@ -1,0 +1,139 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand*\HyPL@Entry[1]{}
+\HyPL@Entry{0<</S/D>>}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\citation{yarowsky1995unsupervised}
+\citation{lee2013pseudo}
+\citation{sohn2020fixmatch,zhang2021flexmatch}
+\citation{xie2020noisy}
+\citation{arazo2020pseudo}
+\citation{wang2023upet}
+\citation{rodemann2023decision,rodemann2023likelihoods}
+\citation{lienen2023conformal}
+\citation{wang2022debiased}
+\citation{wei2021crest}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{2}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Self-training and pseudo-labelling.}{2}{section*.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Selecting pseudo-labels.}{2}{section*.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Class imbalance in pseudo-labels.}{2}{section*.3}\protected@file@percent }
+\citation{madaan2023selfrefine}
+\citation{shumailov2024collapse}
+\citation{guo2017calibration}
+\citation{hinton2015distilling}
+\citation{azime2021amharic}
+\citation{adelani2023masakhanews}
+\citation{alabi2022afroxlmr}
+\citation{ogueji2021afriberta}
+\citation{schick2021pet,tunstall2022setfit}
+\citation{dror2018hitchhiker}
+\citation{schuirmann1987comparison,lakens2017equivalence}
+\citation{adelani2023masakhanews}
+\@writefile{toc}{\contentsline {paragraph}{Self-refinement and model collapse.}{3}{section*.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Calibration.}{3}{section*.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Distillation.}{3}{section*.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Amharic and African-language news classification.}{3}{section*.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Statistical practice.}{3}{section*.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Problem Setting, Data and Protocol}{3}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Data and licence.}{3}{section*.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Splits and labels.}{3}{section*.10}\protected@file@percent }
+\citation{wilcoxon1945individual}
+\@writefile{toc}{\contentsline {paragraph}{Protocol audit.}{4}{section*.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Metrics and statistics.}{4}{section*.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Methods}{4}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Models and feature views}{4}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}The self-training loop}{4}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Selection rules}{4}{subsection.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Calibration}{5}{subsection.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Distillation}{5}{subsection.4.5}\protected@file@percent }
+\newlabel{eq:kd}{{1}{5}{Distillation}{equation.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}System Architecture}{5}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}Results}{5}{section.6}\protected@file@percent }
+\citation{adelani2023masakhanews}
+\citation{adelani2023masakhanews}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Merged architecture: verified self-training (left), knowledge distillation (centre) and evaluation safeguards (right). The dashed arrow shows the development-set gate that accepts or rolls back each round.}}{6}{figure.1}\protected@file@percent }
+\newlabel{fig:arch}{{1}{6}{Merged architecture: verified self-training (left), knowledge distillation (centre) and evaluation safeguards (right). The dashed arrow shows the development-set gate that accepts or rolls back each round}{figure.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Published Amharic MasakhaNEWS results (weighted F1, \citealp  {adelani2023masakhanews}), shown for orientation only. ``$k$ shots'' means $k$ labelled articles per class.}}{6}{table.1}\protected@file@percent }
+\newlabel{tab:ref}{{1}{6}{Published Amharic MasakhaNEWS results (weighted F1, \citealp {adelani2023masakhanews}), shown for orientation only. ``$k$ shots'' means $k$ labelled articles per class}{table.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Baselines and published reference points}{6}{subsection.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Self-training with the MLP teacher}{6}{subsection.6.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces MLP teacher, 20 labels per class, 10{} paired seeds. PL precision = precision of accepted pseudo-labels against hidden gold labels. ``Accepted'' = mean size of the accepted set.}}{7}{table.2}\protected@file@percent }
+\newlabel{tab:main}{{2}{7}{MLP teacher, 20 labels per class, \nSeeds {} paired seeds. PL precision = precision of accepted pseudo-labels against hidden gold labels. ``Accepted'' = mean size of the accepted set}{table.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Accepted pseudo-labels per class at the end of the loop (mean over seeds; acceptance rate $=$ accepted / pool size of that class in parentheses).}}{7}{table.3}\protected@file@percent }
+\newlabel{tab:classes}{{3}{7}{Accepted pseudo-labels per class at the end of the loop (mean over seeds; acceptance rate $=$ accepted / pool size of that class in parentheses)}{table.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Why the unprotected loop collapses}{7}{subsection.6.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Class-aware selection}{7}{subsection.6.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Round-0 confidence diagnostics on the unlabeled pool (mean over seeds): mean and median confidence per true class, share above the 0.9 threshold, confidently wrong predictions (count per seed) and recall. The calibrated char-LR is shown for contrast.}}{8}{table.4}\protected@file@percent }
+\newlabel{tab:diag}{{4}{8}{Round-0 confidence diagnostics on the unlabeled pool (mean over seeds): mean and median confidence per true class, share above the 0.9 threshold, confidently wrong predictions (count per seed) and recall. The calibrated char-LR is shown for contrast}{table.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Verifier activity: candidates that passed the selection rule, disagreements with the verifier, and who was correct on the disagreements (counts summed over seeds).}}{8}{table.5}\protected@file@percent }
+\newlabel{tab:verifier}{{5}{8}{Verifier activity: candidates that passed the selection rule, disagreements with the verifier, and who was correct on the disagreements (counts summed over seeds)}{table.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.5}The verifier}{8}{subsection.6.5}\protected@file@percent }
+\newlabel{sec:verifier}{{6.5}{8}{The verifier}{subsection.6.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.6}A stronger, calibrated teacher}{8}{subsection.6.6}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Error dependence between teacher and verifier on the test set (mean over seeds).}}{9}{table.6}\protected@file@percent }
+\newlabel{tab:vercorr}{{6}{9}{Error dependence between teacher and verifier on the test set (mean over seeds)}{table.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Char-LR teacher with temperature-scaled confidence, 20 labels per class, 10{} paired seeds.}}{9}{table.7}\protected@file@percent }
+\newlabel{tab:charlr}{{7}{9}{Char-LR teacher with temperature-scaled confidence, 20 labels per class, \nSeeds {} paired seeds}{table.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.7}Development-set optimism, thresholds and label budgets}{9}{subsection.6.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Development optimism.}{9}{section*.13}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Threshold sensitivity.}{9}{section*.14}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Label budget.}{9}{section*.15}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces MLP teacher, naive and verified loops at confidence thresholds 0.5, 0.7 and 0.9 (five seeds; $\Delta $ relative to the seed-only teacher of the same seeds).}}{10}{table.8}\protected@file@percent }
+\newlabel{tab:thr}{{8}{10}{MLP teacher, naive and verified loops at confidence thresholds 0.5, 0.7 and 0.9 (five seeds; $\Delta $ relative to the seed-only teacher of the same seeds)}{table.8}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces Test macro-F1 by label budget (MLP teacher, threshold 0.9, five seeds).}}{10}{table.9}\protected@file@percent }
+\newlabel{tab:budget}{{9}{10}{Test macro-F1 by label budget (MLP teacher, threshold 0.9, five seeds)}{table.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.8}Distillation: compression, not accuracy}{10}{subsection.6.8}\protected@file@percent }
+\newlabel{sec:distill}{{6.8}{10}{Distillation: compression, not accuracy}{subsection.6.8}{}}
+\@writefile{toc}{\contentsline {paragraph}{Compression.}{10}{section*.16}\protected@file@percent }
+\citation{wei2021crest,wang2022debiased}
+\@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces Distillation extension (10{} paired seeds): student macro-F1 with hard labels versus the dev-selected distilled student, paired difference with 95\% CI, Wilcoxon $p$, and change in ECE. ``All gold labels'': teacher and student see all training labels. ``80 labels'': teacher trained on the seed set; students see seed and pool inputs, hard labels only on the seed set.}}{11}{table.10}\protected@file@percent }
+\newlabel{tab:dist}{{10}{11}{Distillation extension (\nSeeds {} paired seeds): student macro-F1 with hard labels versus the dev-selected distilled student, paired difference with 95\% CI, Wilcoxon $p$, and change in ECE. ``All gold labels'': teacher and student see all training labels. ``80 labels'': teacher trained on the seed set; students see seed and pool inputs, hard labels only on the seed set}{table.10}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {11}{\ignorespaces Single-article latency on one CPU thread (median over 200 test articles).}}{11}{table.11}\protected@file@percent }
+\newlabel{tab:lat}{{11}{11}{Single-article latency on one CPU thread (median over 200 test articles)}{table.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.9}The merged pipeline}{11}{subsection.6.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}Discussion}{11}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Per-item precision is not enough; composition and calibration matter.}{11}{section*.17}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{A feature-diverse verifier is not an independent one.}{11}{section*.18}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {12}{\ignorespaces Merged pipeline, 10{} paired seeds. ``(ref.)'' rows use all gold labels and are upper references, not comparable under the same label budget.}}{12}{table.12}\protected@file@percent }
+\newlabel{tab:t3}{{12}{12}{Merged pipeline, \mergedN {} paired seeds. ``(ref.)'' rows use all gold labels and are upper references, not comparable under the same label budget}{table.12}{}}
+\@writefile{toc}{\contentsline {paragraph}{Roll-back is protective, not diagnostic.}{12}{section*.19}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Distillation helps size, not accuracy, and cannot repair a weak teacher.}{12}{section*.20}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8}Limitations}{12}{section.8}\protected@file@percent }
+\bibstyle{plainnat}
+\bibdata{references}
+\bibcite{adelani2023masakhanews}{{1}{2023}{{Adelani et~al.}}{{}}}
+\bibcite{alabi2022afroxlmr}{{2}{2022}{{Alabi et~al.}}{{Alabi, Adelani, Mosbach, and Klakow}}}
+\bibcite{arazo2020pseudo}{{3}{2020}{{Arazo et~al.}}{{Arazo, Ortego, Albert, O'Connor, and McGuinness}}}
+\bibcite{azime2021amharic}{{4}{2021}{{Azime and Mohammed}}{{}}}
+\bibcite{dror2018hitchhiker}{{5}{2018}{{Dror et~al.}}{{Dror, Baumer, Shlomov, and Reichart}}}
+\bibcite{guo2017calibration}{{6}{2017}{{Guo et~al.}}{{Guo, Pleiss, Sun, and Weinberger}}}
+\@writefile{toc}{\contentsline {section}{\numberline {9}Conclusion}{13}{section.9}\protected@file@percent }
+\bibcite{hinton2015distilling}{{7}{2015}{{Hinton et~al.}}{{Hinton, Vinyals, and Dean}}}
+\bibcite{lakens2017equivalence}{{8}{2017}{{Lakens}}{{}}}
+\bibcite{lee2013pseudo}{{9}{2013}{{Lee}}{{}}}
+\bibcite{lienen2023conformal}{{10}{2023}{{Lienen et~al.}}{{Lienen, Demir, and H{\"u}llermeier}}}
+\bibcite{madaan2023selfrefine}{{11}{2023}{{Madaan et~al.}}{{}}}
+\bibcite{ogueji2021afriberta}{{12}{2021}{{Ogueji et~al.}}{{Ogueji, Zhu, and Lin}}}
+\bibcite{rodemann2023decision}{{13}{2023}{{Rodemann}}{{}}}
+\bibcite{rodemann2023likelihoods}{{14}{2023}{{Rodemann et~al.}}{{Rodemann, Jansen, Schollmeyer, and Augustin}}}
+\bibcite{schick2021pet}{{15}{2021}{{Schick and Sch{\"u}tze}}{{}}}
+\bibcite{schuirmann1987comparison}{{16}{1987}{{Schuirmann}}{{}}}
+\bibcite{shumailov2024collapse}{{17}{2024}{{Shumailov et~al.}}{{}}}
+\bibcite{sohn2020fixmatch}{{18}{2020}{{Sohn et~al.}}{{Sohn, Berthelot, Carlini, Zhang, Zhang, Raffel, Cubuk, Kurakin, and Li}}}
+\bibcite{tunstall2022setfit}{{19}{2022}{{Tunstall et~al.}}{{}}}
+\bibcite{wang2023upet}{{20}{2023}{{Wang et~al.}}{{}}}
+\bibcite{wang2022debiased}{{21}{2022}{{Wang et~al.}}{{Wang, Wu, Lian, and Yu}}}
+\bibcite{wei2021crest}{{22}{2021}{{Wei et~al.}}{{Wei, Sohn, Mellina, Yuille, and Yang}}}
+\bibcite{wilcoxon1945individual}{{23}{1945}{{Wilcoxon}}{{}}}
+\bibcite{xie2020noisy}{{24}{2020}{{Xie et~al.}}{{Xie, Luong, Hovy, and Le}}}
+\bibcite{yarowsky1995unsupervised}{{25}{1995}{{Yarowsky}}{{}}}
+\bibcite{zhang2021flexmatch}{{26}{2021}{{Zhang et~al.}}{{Zhang, Wang, Hou, Wu, Wang, Okumura, and Shinozaki}}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Reproducibility details}{15}{appendix.A}\protected@file@percent }
+\newlabel{app:repro}{{A}{15}{Reproducibility details}{appendix.A}{}}
+\@writefile{toc}{\contentsline {paragraph}{Environment.}{15}{section*.24}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Settings.}{15}{section*.25}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Commands.}{15}{section*.26}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {B}Additional diagnostics}{16}{appendix.B}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {13}{\ignorespaces Round-0 MLP reliability on the test set, pooled over seeds (15 equal-width bins; empty bins omitted). The teacher is underconfident: accuracy exceeds mean confidence in nearly every populated bin.}}{16}{table.13}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {14}{\ignorespaces Round-0 MLP confusion matrix on the test set, summed over seeds (rows: true class).}}{16}{table.14}\protected@file@percent }
+\gdef \@abspage@last{16}
