@@ -43,8 +43,8 @@ All three tasks share the same data protocol (`src/data.py`):
 
 **Outputs.** `results/task3/`, run with `python -m task3_merged.run` after Task 2.
 
-## Research extension (`research/`)
-Added after peer review; it does not modify Tasks 1-3 (`research.loop` reproduces Task 1's verified variant exactly).
-- `research/loop.py`: class-aware selection rules (`cap`, `balanced`), a char-LR teacher, temperature scaling, rollback margin, verifier-disagreement logging.
-- `research/suite.py`: resumable experiment suites (10 seeds; label budgets; thresholds).
-- `research/diagnostics.py`, `research/stats.py`, `research/distill_ext.py`, `research/latency_e2e.py`: diagnostics, paired statistics, non-linear student, end-to-end latency.
+## Research extension (`paper/research/`)
+Added after peer review; it does not modify Tasks 1-3 (`paper.research.loop` reproduces Task 1's verified variant exactly).
+- `paper/research/loop.py`: class-aware selection rules (`cap`, `balanced`), a char-LR teacher, temperature scaling, rollback margin, verifier-disagreement logging.
+- `paper/research/suite.py`: resumable experiment suites (10 seeds; label budgets; thresholds).
+- `paper/research/diagnostics.py`, `paper/research/stats.py`, `paper/research/distill_ext.py`, `paper/research/latency_e2e.py`: diagnostics, paired statistics, non-linear student, end-to-end latency.

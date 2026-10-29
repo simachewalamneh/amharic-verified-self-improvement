@@ -2,7 +2,7 @@
 import pandas as pd
 from pathlib import Path
 
-R = Path(__file__).resolve().parent.parent / "results"
+R = Path(__file__).resolve().parents[2] / "results"
 
 
 def ms(m, s, p=3):

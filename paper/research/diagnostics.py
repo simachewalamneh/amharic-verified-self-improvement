@@ -1,6 +1,6 @@
 """Round-0 diagnostics: why are some classes never selected, is the verifier informative, how calibrated is the teacher?
 
-python -m research.diagnostics [--seeds 0 1 ... 9]
+python -m paper.research.diagnostics [--seeds 0 1 ... 9]
 Writes results/research/diag_*.csv. Gold labels of the pool are used for MEASUREMENT only.
 """
 from __future__ import annotations

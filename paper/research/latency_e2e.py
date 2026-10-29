@@ -1,6 +1,6 @@
 """End-to-end single-article latency (vectorisation + forward pass), one CPU thread.
 
-python -m research.latency_e2e   -> results/research/latency_e2e.json
+python -m paper.research.latency_e2e   -> results/research/latency_e2e.json
 Teacher = word 1-2gram TF-IDF (10k) + MLP; student = word unigram TF-IDF (2k) + linear.
 """
 from __future__ import annotations

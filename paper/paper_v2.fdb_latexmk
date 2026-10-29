@@ -1,22 +1,22 @@
 # Fdb version 4
-["bibtex paper_v2"] 1793190332.49102 "paper_v2.aux" "paper_v2.bbl" "paper_v2" 1793190334.2277 0
+["bibtex paper_v2"] 1793190332.49102 "paper_v2.aux" "paper_v2.bbl" "paper_v2" 1793234972.31712 0
   "./references.bib" 1792919193 7993 7adb0db332625ff05a823aa7f593fa0e ""
   "/usr/share/texlive/texmf-dist/bibtex/bst/natbib/plainnat.bst" 1233624470 26816 ffe5423d2019860bad9f54bc402fac15 ""
-  "paper_v2.aux" 1793190333.52835 15763 3865713b128f1ad18ab9fced8ea60ead "xelatex"
+  "paper_v2.aux" 1793234971.00414 15763 3865713b128f1ad18ab9fced8ea60ead "xelatex"
   (generated)
   "paper_v2.bbl"
   "paper_v2.blg"
   (rewritten before read)
-["xdvipdfmx"] 1793190333.87037 "paper_v2.xdv" "paper_v2.pdf" "paper_v2" 1793190334.23086 0
-  "paper_v2.xdv" 1793190333.53039 449596 ea7141f7c89f47b37bb5148b7436d840 "xelatex"
+["xdvipdfmx"] 1793234971.61629 "paper_v2.xdv" "paper_v2.pdf" "paper_v2" 1793234972.32346 0
+  "paper_v2.xdv" 1793234971.00926 449896 d04c0b060338e13fb67c9b489e861290 "xelatex"
   (generated)
   "paper_v2.pdf"
   (rewritten before read)
-["xelatex"] 1793190332.68731 "/home/simala/D_Drive/AI Projects/amharic-verified-self-improvement/paper/paper_v2.tex" "paper_v2.xdv" "paper_v2" 1793190334.22815 0
+["xelatex"] 1793234968.9426 "/home/simala/D_Drive/AI Projects/amharic-verified-self-improvement/paper/paper_v2.tex" "paper_v2.xdv" "paper_v2" 1793234972.31792 0
   "../docs/abstract/merged_overview.pdf" 1793159828 110086 522156965b1e90788657ef74d632e347 ""
   "/etc/texmf/web2c/texmf.cnf" 1786547002.25529 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/home/simala/.texlive2025/texmf-var/web2c/xetex/xelatex.fmt" 1786547194 4420313 e1b1e232234955ab4ff217a5da44fd33 ""
-  "/home/simala/D_Drive/AI Projects/amharic-verified-self-improvement/paper/paper_v2.tex" 1793190326.57516 25986 38e29c2f9229c8461702cd154ea4ce31 ""
+  "/home/simala/D_Drive/AI Projects/amharic-verified-self-improvement/paper/paper_v2.tex" 1793234964.60059 25986 38e29c2f9229c8461702cd154ea4ce31 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
@@ -103,25 +103,25 @@
   "/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty" 1727642399 55384 b454dec21c2d9f45ec0b793f0995b992 ""
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1769369718 41603 27f93b3067076450172040dcd57ca8b3 ""
   "/usr/share/texmf/web2c/texmf.cnf" 1769369718 41603 27f93b3067076450172040dcd57ca8b3 ""
-  "abstract.tex" 1792958868 1780 c5ffcf80fa35fb59f20d26e22e687ee5 ""
-  "paper_v2.aux" 1793190333.52835 15763 3865713b128f1ad18ab9fced8ea60ead "xelatex"
+  "abstract.tex" 1793234964.57205 1780 c5ffcf80fa35fb59f20d26e22e687ee5 ""
+  "paper_v2.aux" 1793234971.00414 15763 3865713b128f1ad18ab9fced8ea60ead "xelatex"
   "paper_v2.bbl" 1793190332.65092 7887 635280b0089a8c7013da3d515da9be7f "bibtex paper_v2"
-  "paper_v2.out" 1793190333.52972 4082 bfe034a0ac4f1c30280f2be0c43e1df6 "xelatex"
-  "part_b.tex" 1792958881 10610 09ba98ad4b9569ac4f7f63cd827dda48 ""
-  "tables2/budget.tex" 1793190326.68045 544 d010c5b8cb90fc359bb13a903f82cd6b ""
-  "tables2/charlr.tex" 1793190326.64461 862 44a8de5f2dbf2f78280632b99c432f76 ""
-  "tables2/classes.tex" 1793190326.52069 553 10ec7ed6fb02a03515d261b1c08175f4 ""
-  "tables2/confusion.tex" 1793190326.55568 267 ad425eab9ed2a65048d452739365c652 ""
-  "tables2/diag_class.tex" 1793190326.53501 673 b325fbe665543e43c364521970bc0b28 ""
-  "tables2/distill_ext.tex" 1793190326.69525 591 1d2aaa213e12470b8ac527822ede0feb ""
-  "tables2/latency.tex" 1793190326.69566 195 69155cce423b62b63d50027d5d0d6400 ""
-  "tables2/macros.tex" 1793190326.76491 8799 f1bc5106d3782d043752e7130bb46bd3 ""
-  "tables2/main.tex" 1793190326.48765 965 5d4bbaff63735af03f791bd7df4176a2 ""
-  "tables2/reliability.tex" 1793190326.55007 572 32a23bab387b650411e02ea97f5ff36b ""
-  "tables2/task3.tex" 1793190326.70894 768 efbef1f2fb2ba5e83c602f15b9cfb5fe ""
-  "tables2/threshold.tex" 1793190326.68799 533 5b185b337685b30b356a74d56c639ff2 ""
-  "tables2/verifier.tex" 1793190326.5619 480 2663ce6b2b1725f3e2ce533da98a6d7c ""
-  "tables2/verifier_corr.tex" 1793190326.56902 325 7ca348f60df7626bfb524d240a22d479 ""
+  "paper_v2.out" 1793234971.00761 4082 bfe034a0ac4f1c30280f2be0c43e1df6 "xelatex"
+  "part_b.tex" 1793234964.61387 10640 97573c63b8fceb2142327fcfeff5b2e2 ""
+  "tables2/budget.tex" 1793234964.70832 544 d010c5b8cb90fc359bb13a903f82cd6b ""
+  "tables2/charlr.tex" 1793234964.71961 862 44a8de5f2dbf2f78280632b99c432f76 ""
+  "tables2/classes.tex" 1793234964.72998 553 10ec7ed6fb02a03515d261b1c08175f4 ""
+  "tables2/confusion.tex" 1793234964.73921 267 ad425eab9ed2a65048d452739365c652 ""
+  "tables2/diag_class.tex" 1793234964.7562 673 b325fbe665543e43c364521970bc0b28 ""
+  "tables2/distill_ext.tex" 1793234964.77125 591 1d2aaa213e12470b8ac527822ede0feb ""
+  "tables2/latency.tex" 1793234964.77902 195 69155cce423b62b63d50027d5d0d6400 ""
+  "tables2/macros.tex" 1793234964.78821 8799 f1bc5106d3782d043752e7130bb46bd3 ""
+  "tables2/main.tex" 1793234964.79953 965 5d4bbaff63735af03f791bd7df4176a2 ""
+  "tables2/reliability.tex" 1793234964.8072 572 32a23bab387b650411e02ea97f5ff36b ""
+  "tables2/task3.tex" 1793234964.81665 768 efbef1f2fb2ba5e83c602f15b9cfb5fe ""
+  "tables2/threshold.tex" 1793234964.82448 533 5b185b337685b30b356a74d56c639ff2 ""
+  "tables2/verifier.tex" 1793234964.83255 480 2663ce6b2b1725f3e2ce533da98a6d7c ""
+  "tables2/verifier_corr.tex" 1793234964.84016 325 7ca348f60df7626bfb524d240a22d479 ""
   (generated)
   "paper_v2.aux"
   "paper_v2.log"

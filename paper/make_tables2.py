@@ -1,6 +1,6 @@
 """Builds paper/tables2/*.tex and paper/tables2/macros.tex from results/ (no number in the paper is typed by hand).
-Run after: python -m research.suite --suite all; python -m research.diagnostics; python -m research.distill_ext;
-python -m research.latency_e2e; python -m research.stats; python -m task3_merged.run (10 seeds).
+Run after: python -m paper.research.suite --suite all; python -m paper.research.diagnostics; python -m paper.research.distill_ext;
+python -m paper.research.latency_e2e; python -m paper.research.stats; python -m task3_merged.run (10 seeds).
 """
 import json
 import sys
@@ -11,7 +11,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
-from research.stats import load, paired  # noqa: E402
+from paper.research.stats import load, paired  # noqa: E402
 
 R = ROOT / "results" / "research"
 OUT = Path(__file__).resolve().parent / "tables2"

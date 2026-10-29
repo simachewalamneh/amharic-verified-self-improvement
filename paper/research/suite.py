@@ -1,10 +1,10 @@
 """Research-extension experiment suites (resumable; one JSON line per run).
 
-python -m research.suite --suite main      # MLP teacher, 20 labels/class, 10 seeds, selection-rule ablation
-python -m research.suite --suite charlr    # stronger char-LR teacher, calibrated, verifier that can disagree
-python -m research.suite --suite budget    # label budgets 5/10/40 per class
-python -m research.suite --suite threshold # confidence thresholds 0.5/0.7 (0.9 is in 'main')
-python -m research.suite --suite all
+python -m paper.research.suite --suite main      # MLP teacher, 20 labels/class, 10 seeds, selection-rule ablation
+python -m paper.research.suite --suite charlr    # stronger char-LR teacher, calibrated, verifier that can disagree
+python -m paper.research.suite --suite budget    # label budgets 5/10/40 per class
+python -m paper.research.suite --suite threshold # confidence thresholds 0.5/0.7 (0.9 is in 'main')
+python -m paper.research.suite --suite all
 Add --smoke --set data.source=synthetic for a seconds-long wiring test (never report synthetic numbers).
 Outputs: results/research/<suite>_runs.jsonl, <suite>_rounds.jsonl, preds/<suite>__<variant>__<budget>__s<seed>.npz
 """

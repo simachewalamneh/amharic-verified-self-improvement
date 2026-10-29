@@ -1,6 +1,6 @@
 """Paired statistics for the research extension.
 
-python -m research.stats
+python -m paper.research.stats
 Reads results/research/*_runs.jsonl and preds/*.npz; writes results/research/analysis_*.csv and analysis_facts.json.
 Tests (all paired by seed, i.e. same seed-set draw): bootstrap 95% CI of the mean difference over seeds,
 Wilcoxon signed-rank (two-sided) and a TOST equivalence test (paired t, margin 0.01 macro-F1).

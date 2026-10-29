@@ -1,6 +1,6 @@
 """Distillation extension: linear AND non-linear students, two supervision conditions, 10 seeds, paired statistics.
 
-python -m research.distill_ext [--seeds 0 ... 9]
+python -m paper.research.distill_ext [--seeds 0 ... 9]
 Conditions:
   full     : teacher trained on all 1,311 gold labels (Task 2 setting); students see all train inputs and gold labels.
   lowlabel : teacher trained on the 80-label seed set; students see seed + pool inputs, hard labels only on the seed set.
